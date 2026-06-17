@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Administración TIC — Acceso</title>
+    <link rel="shortcut icon" href="/static/images/itb/favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="/static/css/tailwind.css" rel="stylesheet">
+
+    <style>
+        /* Tailwind no puede expresar esto directamente */
+
+        @keyframes viajar {
+            from { stroke-dashoffset: 1270; }
+            to   { stroke-dashoffset: 0; }
+        }
+        @keyframes latido {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(48, 196, 141, 0.55); }
+            50%      { box-shadow: 0 0 0 6px rgba(48, 196, 141, 0); }
+        }
+
+        /* Grid de columnas no estándar */
+        .pantalla { grid-template-columns: minmax(420px, 5fr) 7fr; }
+
+        /* Malla de puntos (pseudo-elemento con mask-image) */
+        .panel-visual::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(246, 248, 251, 0.10) 1px, transparent 1px);
+            background-size: 26px 26px;
+            mask-image: radial-gradient(ellipse 90% 80% at 60% 40%, black 30%, transparent 75%);
+            -webkit-mask-image: radial-gradient(ellipse 90% 80% at 60% 40%, black 30%, transparent 75%);
+        }
+
+        /* Trazas SVG de circuito */
+        .traza { fill: none; stroke: rgba(45, 127, 249, 0.20); stroke-width: 1.5; }
+        .pulso  {
+            fill: none; stroke: #22D3EE; stroke-width: 1.5;
+            stroke-linecap: round; stroke-dasharray: 70 1200;
+            animation: viajar 7s linear infinite;
+            filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.8));
+        }
+        .pulso.p2 { animation-delay: 2.4s; animation-duration: 9s; stroke: #2D7FF9; }
+        .pulso.p3 { animation-delay: 4.8s; animation-duration: 8s; }
+
+        /* Animaciones de estado */
+        .chip-estado .punto { animation: latido 2.2s ease-in-out infinite; }
+        .aviso-mayus.visible { display: flex; }
+
+        /* Sibling selector: ícono se colorea cuando el input hermano tiene foco */
+        .grupo-campo:focus-within .icono-campo { color: #2D7FF9; }
+
+        /* Flecha del botón se desplaza al hover */
+        .btn-ingresar:hover .flecha { transform: translateX(3px); }
+
+        /* Responsive */
+        @media (max-width: 980px) {
+            .pantalla          { grid-template-columns: 1fr; }
+            .panel-visual      { order: -1; min-height: 280px; justify-content: center; }
+            .texto-visual,
+            .telemetria        { display: none; }
+            .titulo-visual     { font-size: 24px; margin-bottom: 0; }
+            .marca-escritorio  { display: none; }
+            .marca-movil       { display: flex !important; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .pulso                { animation: none; opacity: 0; }
+            .chip-estado .punto   { animation: none; }
+            *                     { transition: none !important; }
+        }
+    </style>
+</head>
+<body class="font-sans bg-hueso text-ink antialiased">
+
+<div class="pantalla grid min-h-screen">
+
+    <!-- ============ FORMULARIO ============ -->
+    <section class="flex flex-col justify-center px-[clamp(32px,6vw,96px)] py-12 bg-hueso relative">
+
+        <div class="marca-escritorio absolute top-10 left-[clamp(32px,6vw,96px)] flex items-center gap-3">
+            <img src="/static/images/ITB-LogoCompleto.png" alt="Logo institucional" class="h-9 w-auto block">
+            <img src="/static/images/UBE-LogoCompleto.png" alt="Logo institucional" class="h-9 w-auto block">
+            <div>
+                <p class="text-[13px] font-semibold tracking-[0.04em] text-ink leading-tight">Administración TIC</p>
+                <span class="block font-mono text-[10.5px] tracking-[0.14em] text-niebla uppercase">Sistema de Gestión Académica</span>
+            </div>
+        </div>
+
+        <div class="w-full max-w-[400px] mx-auto">
+
+            <p class="font-mono text-[11px] tracking-[0.22em] uppercase text-azul mb-[14px] flex items-center gap-[10px] before:content-[''] before:w-[26px] before:h-px before:bg-azul">
+                Acceso restringido
+            </p>
+            <h1 class="text-[clamp(26px,3vw,32px)] font-bold tracking-tight leading-[1.15] mb-2">Inicia sesión</h1>
+            <p class="text-[14.5px] text-niebla mb-9">
+                Usa tus credenciales institucionales para entrar al panel de administración.
+            </p>
+
+            {% if error %}
+                <div class="flex gap-[10px] items-start px-[14px] py-3 mb-[22px] rounded-[10px] bg-error/[8%] border border-error/35 text-[#B3261E] text-[13.5px] leading-[1.45]" role="alert">
+                    <svg class="shrink-0 mt-px" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+                    <div>{{ error }}</div>
+                </div>
+            {% endif %}
+
+            <form method="POST" action="/login" novalidate>
+                {% csrf_token %}
+
+                <!-- Campo usuario -->
+                <div class="mb-5">
+                    <label for="txtUsername" class="block text-[13px] font-semibold tracking-[0.01em] mb-[7px]">Usuario</label>
+                    <div class="grupo-campo relative flex items-center">
+                        <svg class="icono-campo absolute left-[14px] text-niebla pointer-events-none transition-colors"
+                             xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24"
+                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/>
+                        </svg>
+                        <input type="text" id="txtUsername" name="username"
+                               placeholder="Usuario"
+                               autocomplete="username" autocapitalize="none"
+                               spellcheck="false" autofocus required
+                               class="w-full h-[50px] pl-[44px] pr-[14px] font-sans text-[15px] text-ink bg-white
+                                      border border-niebla/[22%] rounded-[14px] outline-none transition
+                                      hover:border-niebla/45
+                                      focus:border-azul focus:ring-4 focus:ring-azul/[14%]
+                                      placeholder:text-[#B9C2CF]">
+                    </div>
+                </div>
+
+                <!-- Campo contraseña -->
+                <div class="mb-5">
+                    <label for="txtPassword" class="block text-[13px] font-semibold tracking-[0.01em] mb-[7px]">Contraseña</label>
+                    <div class="grupo-campo relative flex items-center">
+                        <svg class="icono-campo absolute left-[14px] text-niebla pointer-events-none transition-colors"
+                             xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24"
+                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+                        </svg>
+                        <input type="password" id="txtPassword" name="password"
+                               placeholder="••••••••••"
+                               autocomplete="current-password" required
+                               class="w-full h-[50px] pl-[44px] pr-[48px] font-sans text-[15px] text-ink bg-white
+                                      border border-niebla/[22%] rounded-[14px] outline-none transition
+                                      hover:border-niebla/45
+                                      focus:border-azul focus:ring-4 focus:ring-azul/[14%]
+                                      placeholder:text-[#B9C2CF]">
+                        <button type="button" id="togglePassword"
+                                class="absolute right-1.5 grid place-items-center w-[38px] h-[38px]
+                                       border-0 rounded-[10px] bg-transparent text-niebla cursor-pointer transition
+                                       hover:bg-niebla/[12%] hover:text-ink
+                                       focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-azul"
+                                aria-label="Mostrar contraseña" aria-pressed="false">
+                            <svg id="iconoOjo" xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/>
+                                <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="aviso-mayus hidden items-center gap-1.5 mt-[7px] font-mono text-[11px] tracking-[0.06em] text-[#B45309]"
+                       id="avisoMayus" aria-live="polite">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
+                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 3l7 7h-4v4h-6v-4H5z"/><path d="M9 19h6"/>
+                        </svg>
+                        Bloq Mayús está activado
+                    </p>
+                </div>
+
+                <button type="submit"
+                        class="btn-ingresar w-full h-[52px] mt-2 flex items-center justify-center gap-[10px]
+                               font-sans text-[15px] font-semibold tracking-[0.02em] text-white
+                               bg-azul border-0 rounded-[14px] cursor-pointer transition
+                               hover:bg-azul-hover active:translate-y-px
+                               focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-azul/45
+                               shadow-[0_10px_24px_-10px_rgba(45,127,249,0.55)] hover:shadow-[0_14px_28px_-10px_rgba(45,127,249,0.65)]">
+                    Ingresar al sistema
+                    <svg class="flecha transition-transform" xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24"
+                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14"/><path d="M13 6l6 6l-6 6"/>
+                    </svg>
+                </button>
+            </form>
+
+            <div class="mt-8 pt-5 border-t border-niebla/[22%] font-mono text-[11px] tracking-[0.08em] text-niebla flex justify-between flex-wrap gap-2">
+                <span>ITB - UBE · TIC</span>
+                <span id="reloj">--:--:--</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ PANEL VISUAL ============ -->
+    <aside class="panel-visual relative overflow-hidden flex flex-col justify-end p-[clamp(40px,5vw,72px)]"
+           style="background: radial-gradient(1100px 700px at 80% -10%, rgba(45,127,249,0.28), transparent 60%), radial-gradient(900px 600px at -10% 110%, rgba(34,211,238,0.14), transparent 55%), linear-gradient(160deg, #0F1F38, #0A1628 65%);"
+           aria-hidden="true">
+
+        <!-- Trazas de circuito animadas -->
+        <svg class="absolute inset-0 w-full h-full pointer-events-none"
+             viewBox="0 0 900 620" preserveAspectRatio="xMidYMid slice"
+             xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+             style="z-index:1">
+
+            <!-- Nodos de unión -->
+            <g fill="rgba(45,127,249,0.28)">
+                <circle cx="140" cy="80"  r="3.5"/><circle cx="300" cy="80"  r="3.5"/>
+                <circle cx="460" cy="80"  r="3.5"/><circle cx="620" cy="80"  r="3.5"/>
+                <circle cx="780" cy="80"  r="3.5"/><circle cx="460" cy="40"  r="3.5"/>
+                <circle cx="140" cy="200" r="3.5"/><circle cx="300" cy="200" r="3.5"/>
+                <circle cx="460" cy="200" r="3.5"/><circle cx="620" cy="200" r="3.5"/>
+                <circle cx="780" cy="200" r="3.5"/>
+                <circle cx="140" cy="340" r="3.5"/><circle cx="300" cy="340" r="3.5"/>
+                <circle cx="460" cy="340" r="3.5"/><circle cx="620" cy="340" r="3.5"/>
+                <circle cx="780" cy="340" r="3.5"/>
+                <circle cx="140" cy="480" r="3.5"/><circle cx="300" cy="480" r="3.5"/>
+                <circle cx="460" cy="480" r="3.5"/><circle cx="620" cy="480" r="3.5"/>
+                <circle cx="780" cy="480" r="3.5"/>
+            </g>
+
+            <!-- Red de trazas estáticas -->
+            <path class="traza" d="M 0 80  H 140 V 200 H 300 V 80  H 460 V 40  H 620 V 80  H 780 V 200 H 900"/>
+            <path class="traza" d="M 0 200 H 140 V 340 H 300 V 200 H 460 V 340 H 620 V 200 H 780 V 340 H 900"/>
+            <path class="traza" d="M 0 340 H 140 V 480 H 300 V 340 H 460 V 480 H 620 V 340 H 780 V 480 H 900"/>
+            <path class="traza" d="M 460 40  V 0"/>
+            <path class="traza" d="M 780 80  V 0"/>
+            <path class="traza" d="M 140 480 V 620"/>
+            <path class="traza" d="M 300 480 V 620"/>
+            <path class="traza" d="M 460 480 V 620"/>
+            <path class="traza" d="M 620 480 V 620"/>
+            <path class="traza" d="M 780 480 V 620"/>
+
+            <!-- Pulsos de luz animados -->
+            <path class="pulso"    d="M 0 80  H 140 V 200 H 300 V 80  H 460 V 40  H 620 V 80  H 780 V 200 H 900"/>
+            <path class="pulso p2" d="M 900 340 H 780 V 200 H 620 V 340 H 460 V 200 H 300 V 340 H 140 V 480 H 0"/>
+            <path class="pulso p3" d="M 0 480 H 140 V 340 H 300 V 480 H 460 V 340 H 620 V 480 H 780 V 620"/>
+        </svg>
+
+        <div class="marca-movil hidden items-center gap-3 absolute top-7 z-[3]"
+             style="left: clamp(24px,6vw,48px);">
+            <img src="/static/images/ITB-Blanco.png" alt="" class="h-8" style="filter:brightness(0) invert(1);">
+            <img src="/static/images/UBE-Blanco.png" alt="" class="h-8" style="filter:brightness(0) invert(1);">
+        </div>
+
+
+        <div class="contenido-visual relative z-[2] text-hueso max-w-[560px]">
+            <span class="chip-estado inline-flex items-center gap-2 px-[14px] py-[7px] mb-[26px]
+                         rounded-full border border-ok/35 bg-ok/[10%]
+                         font-mono text-[11px] tracking-[0.14em] uppercase text-ok">
+                <span class="punto w-[7px] h-[7px] rounded-full bg-ok"></span>
+                Plataforma operativa
+            </span>
+            <h2 class="titulo-visual text-[clamp(28px,3.2vw,42px)] font-bold tracking-tight leading-[1.12] mb-[14px]">
+                Infraestructura, datos y servicios <em class="not-italic text-cian">bajo control.</em>
+            </h2>
+            <p class="texto-visual text-[15px] leading-relaxed text-hueso/[72%] mb-9 max-w-[46ch]">
+                Panel central de Administración TIC: gestiona usuarios, servicios académicos
+                y la infraestructura tecnológica del instituto desde un solo lugar.
+            </p>
+            <div class="telemetria flex gap-[14px] flex-wrap font-mono text-[11.5px] tracking-[0.06em]">
+                <div class="px-4 py-[10px] rounded-[10px] border border-hueso/[14%] bg-hueso/[5%] backdrop-blur-sm text-hueso/80">
+                    Conexión<b class="block font-medium text-hueso text-[13px] mt-0.5">Cifrada · TLS</b>
+                </div>
+                <div class="px-4 py-[10px] rounded-[10px] border border-hueso/[14%] bg-hueso/[5%] backdrop-blur-sm text-hueso/80">
+                    Acceso<b class="block font-medium text-hueso text-[13px] mt-0.5">Solo personal autorizado</b>
+                </div>
+                <div class="px-4 py-[10px] rounded-[10px] border border-hueso/[14%] bg-hueso/[5%] backdrop-blur-sm text-hueso/80">
+                    Sesión<b class="block font-medium text-hueso text-[13px] mt-0.5">Auditada</b>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+
+<script>
+    // Mostrar / ocultar contraseña
+    const toggle = document.getElementById('togglePassword');
+    const input  = document.getElementById('txtPassword');
+    const icono  = document.getElementById('iconoOjo');
+
+    const ojoAbierto  = '<path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"/>';
+    const ojoCerrado  = '<path d="M10.585 10.587a2 2 0 0 0 2.829 2.828"/><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87"/><path d="M3 3l18 18"/>';
+
+    toggle.addEventListener('click', () => {
+        const visible = input.type === 'text';
+        input.type    = visible ? 'password' : 'text';
+        icono.innerHTML = visible ? ojoAbierto : ojoCerrado;
+        toggle.setAttribute('aria-pressed', String(!visible));
+        toggle.setAttribute('aria-label', visible ? 'Mostrar contraseña' : 'Ocultar contraseña');
+        input.focus({ preventScroll: true });
+    });
+
+    // Aviso de Bloq Mayús
+    const aviso = document.getElementById('avisoMayus');
+    input.addEventListener('keyup', (e) => {
+        if (typeof e.getModifierState === 'function') {
+            aviso.classList.toggle('visible', e.getModifierState('CapsLock'));
+        }
+    });
+    input.addEventListener('blur', () => aviso.classList.remove('visible'));
+
+    // Reloj del sistema
+    const reloj = document.getElementById('reloj');
+    const tick  = () => { reloj.textContent = new Date().toLocaleTimeString('es-EC', { hour12: false }); };
+    tick();
+    setInterval(tick, 1000);
+</script>
+
+</body>
+</html>

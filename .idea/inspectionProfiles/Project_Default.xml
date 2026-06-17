@@ -1,0 +1,27 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <list>
+          <option value="psycopg" />
+          <option value="asgiref" />
+          <option value="cloudinary" />
+          <option value="dj-database-url" />
+          <option value="Django" />
+          <option value="django-cloudinary-storage" />
+          <option value="django-simple-history" />
+          <option value="django-tailwind" />
+          <option value="gunicorn" />
+          <option value="Pillow" />
+          <option value="python-decouple" />
+          <option value="redis" />
+          <option value="pytailwindcss" />
+          <option value="sqlparse" />
+          <option value="tzdata" />
+          <option value="whitenoise" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>

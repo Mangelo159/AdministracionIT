@@ -1,0 +1,240 @@
+/* ============================================================
+   Página: Inicio (home)
+   Sistema: Consola TIC — consume únicamente tokens del sistema.
+   Nada de colores ni fuentes nuevas; solo var(--*).
+   ============================================================ */
+
+/* ── Cabecera de identidad ─────────────────────────────────── */
+.inicio-cabecera {
+    padding-bottom: 28px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--linea);
+}
+
+.inicio-titulo {
+    margin: 10px 0 0;
+    font-size: clamp(26px, 3.2vw, 34px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: var(--ink);
+}
+
+.inicio-identidad {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 18px;
+}
+
+.inicio-nombre {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+}
+
+.inicio-meta {
+    margin: 6px 0 0;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: var(--niebla);
+}
+
+.inicio-sep { opacity: 0.5; padding: 0 4px; }
+
+.inicio-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* ── Cabecera de grupo: etiqueta + conteo + regla ──────────── */
+.inicio-modulos { padding-top: 26px; }
+
+.grupo-cabecera {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 14px;
+}
+
+.modulos-grid + .grupo-cabecera {
+    margin-top: 36px;
+}
+
+.grupo-nombre {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink);
+}
+
+.grupo-conteo {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--niebla);
+    border: 1px solid var(--linea);
+    border-radius: 999px;
+    padding: 3px 10px;
+}
+
+.grupo-regla {
+    flex: 1;
+    height: 1px;
+    background: var(--linea);
+}
+
+/* ── Grid de módulos ───────────────────────────────────────── */
+.modulos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+}
+
+.modulo-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: #FFFFFF;
+    border: 1px solid var(--linea);
+    border-radius: var(--radio);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.modulo-card:hover {
+    border-color: rgba(45, 127, 249, 0.45);
+    box-shadow: 0 14px 32px -18px rgba(10, 22, 40, 0.35);
+    transform: translateY(-1px);
+}
+
+.modulo-card:focus-visible {
+    outline: none;
+    border-color: var(--azul);
+    box-shadow: 0 0 0 4px rgba(45, 127, 249, 0.14);
+}
+
+.modulo-icono {
+    flex-shrink: 0;
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--hueso);
+    border: 1px solid var(--linea);
+    border-radius: 12px;
+}
+
+.modulo-icono img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.modulo-texto {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.modulo-nombre {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.modulo-desc {
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    color: var(--niebla);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.modulo-flecha {
+    width: 16px;
+    height: 16px;
+    margin-left: auto;
+    flex-shrink: 0;
+    color: var(--niebla);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease;
+}
+
+.modulo-card:hover .modulo-flecha,
+.modulo-card:focus-visible .modulo-flecha {
+    opacity: 1;
+    transform: translateX(0);
+    color: var(--azul);
+}
+
+/* ── Estado vacío ──────────────────────────────────────────── */
+.estado-vacio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 64px 24px;
+    border: 1px dashed var(--linea);
+    border-radius: var(--radio);
+}
+
+.estado-vacio-icono {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+    border: 1px solid var(--linea);
+    border-radius: var(--radio);
+    margin-bottom: 16px;
+    color: var(--niebla);
+}
+
+.estado-vacio-icono svg { width: 24px; height: 24px; }
+
+.estado-vacio-titulo {
+    margin: 0 0 4px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.estado-vacio-texto {
+    margin: 0;
+    font-size: 11.5px;
+    letter-spacing: 0.05em;
+    color: var(--niebla);
+}
+
+/* ── Movimiento reducido ───────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    .modulo-card,
+    .modulo-flecha {
+        transition: none;
+    }
+    .modulo-card:hover { transform: none; }
+}
+
+/* ── Móvil ─────────────────────────────────────────────────── */
+@media (max-width: 560px) {
+    .modulos-grid { grid-template-columns: 1fr; }
+    .inicio-identidad { align-items: flex-start; flex-direction: column; }
+}

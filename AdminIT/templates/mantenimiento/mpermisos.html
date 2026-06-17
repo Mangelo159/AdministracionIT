@@ -1,0 +1,355 @@
+{% extends "basebs.html" %}
+{% block pagetitle %}Permisos — Mantenimiento{% endblock %}
+
+{% block extrahead %}{% endblock %}
+
+{% block canvas %}
+<script>
+/* ── Modal ── */
+function abrirModal() {
+  document.getElementById('modal-titulo').textContent = 'Nuevo permiso';
+  document.getElementById('perm-rol-wrap').style.display = '';
+  document.getElementById('perm-modulo-wrap').style.display = '';
+  document.getElementById('modal-overlay').classList.add('abierto');
+}
+function cerrarModal() {
+  document.getElementById('modal-overlay').classList.remove('abierto');
+  setTimeout(function() {
+    document.getElementById('perm-accion').value = 'crear_permiso';
+    document.getElementById('perm-id-hidden').value = '';
+    document.getElementById('form-permiso').reset();
+    document.getElementById('perm-ver').checked = true;
+    document.getElementById('perm-rol-wrap').style.display = '';
+    document.getElementById('perm-modulo-wrap').style.display = '';
+    document.getElementById('perm-rol-val').value = '';
+    document.getElementById('perm-modulo-val').value = '';
+    if (csPermRol) csPermRol.reset();
+    if (csPermMod) csPermMod.reset();
+  }, 220);
+}
+function cerrarModalOverlay(e) {
+  if (e.target === document.getElementById('modal-overlay')) cerrarModal();
+}
+function abrirModalEditar(id, ver, crear, editar, eliminar, rolNombre, moduloNombre) {
+  document.getElementById('perm-accion').value = 'editar_permiso';
+  document.getElementById('perm-id-hidden').value = id;
+  document.getElementById('perm-ver').checked = ver;
+  document.getElementById('perm-crear').checked = crear;
+  document.getElementById('perm-editar').checked = editar;
+  document.getElementById('perm-eliminar').checked = eliminar;
+  document.getElementById('perm-rol-wrap').style.display = 'none';
+  document.getElementById('perm-modulo-wrap').style.display = 'none';
+  document.getElementById('modal-titulo').textContent = rolNombre + ' / ' + moduloNombre;
+  document.getElementById('modal-overlay').classList.add('abierto');
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') { cerrarModal(); cerrarConfirm(); }
+});
+
+var _formPendiente = null;
+function abrirConfirm(form, nombre) {
+  _formPendiente = form;
+  document.getElementById('confirm-nombre').textContent = nombre;
+  document.getElementById('confirm-overlay').classList.add('abierto');
+  document.getElementById('confirm-btn-ok').focus();
+}
+function cerrarConfirm() {
+  document.getElementById('confirm-overlay').classList.remove('abierto');
+  _formPendiente = null;
+}
+function confirmarEliminar() {
+  if (_formPendiente) {
+    mantPost(_formPendiente, function() {
+      cerrarConfirm();
+      mantToast('Permiso eliminado', 'exito');
+      setTimeout(function() { location.reload(); }, 2200);
+    });
+  }
+}
+
+/* ── Filtro ── */
+var csRol, csMod, csPermRol, csPermMod, paginador;
+function filtrarPermisos() {
+  var q   = document.getElementById('buscador-permisos').value.toLowerCase();
+  var rol = csRol ? csRol.getValue().toLowerCase() : '';
+  var mod = csMod ? csMod.getValue().toLowerCase() : '';
+  document.querySelectorAll('.roles-tabla tbody tr:not(.fila-vacia)').forEach(function(row) {
+    var rolText = row.cells[0].textContent.toLowerCase();
+    var modText = row.cells[1].textContent.toLowerCase();
+    var ok = (!q   || rolText.includes(q) || modText.includes(q))
+           && (!rol || rolText === rol)
+           && (!mod || modText === mod);
+    if (ok) { delete row.dataset.filtrado; } else { row.dataset.filtrado = '1'; }
+  });
+  paginador.reset();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  csRol     = initCSelect('cs-rol', filtrarPermisos);
+  csMod     = initCSelect('cs-mod', filtrarPermisos);
+  csPermRol = initCSelect('cs-perm-rol', function() {
+    document.getElementById('perm-rol-val').value = csPermRol.getValue();
+  });
+  csPermMod = initCSelect('cs-perm-modulo', function() {
+    document.getElementById('perm-modulo-val').value = csPermMod.getValue();
+  });
+  paginador = initPaginador('.roles-tabla tbody', 'paginador-nav', 10);
+  document.getElementById('form-permiso').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var accion = document.getElementById('perm-accion').value;
+    if (accion === 'crear_permiso') {
+      if (!document.getElementById('perm-rol-val').value) {
+        mantToast('Selecciona un rol', 'error'); return;
+      }
+      if (!document.getElementById('perm-modulo-val').value) {
+        mantToast('Selecciona un módulo', 'error'); return;
+      }
+    }
+    var msg = accion === 'crear_permiso' ? 'Permiso creado' : 'Permiso actualizado';
+    mantPost(this, function() {
+      cerrarModal();
+      mantToast(msg, 'exito');
+      setTimeout(function() { location.reload(); }, 2200);
+    });
+  });
+});
+</script>
+
+<header class="hub-cabecera">
+  <div class="hub-cab-inner">
+    <div class="hub-cab-texto">
+      <div class="hub-cab-acento" aria-hidden="true"></div>
+      <div>
+        <p class="eyebrow">Mantenimiento · Permisos</p>
+        <h1 class="hub-titulo">Permisos</h1>
+        <p class="hub-subtitulo">Define qué puede hacer cada rol dentro de cada módulo.</p>
+      </div>
+    </div>
+    <a href="{% url 'mantenimiento' %}" class="roles-btn-volver">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Mantenimiento
+    </a>
+  </div>
+</header>
+
+{% if messages %}
+<div class="roles-mensajes">
+  {% for message in messages %}
+  <div class="alerta alerta-{{ message.tags }}" role="alert">{{ message }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="roles-body">
+
+  <div class="buscador-card">
+    <div class="buscador-fila">
+      <div class="buscador-control">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" class="buscador-icono" aria-hidden="true">
+          <circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M10 10l3.5 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <input type="search" id="buscador-permisos"
+               placeholder="Buscar permiso…"
+               oninput="filtrarPermisos()"
+               autocomplete="off">
+      </div>
+      <div class="buscador-divider" aria-hidden="true"></div>
+      <div class="c-select" id="cs-rol">
+        <button type="button" class="c-select-trigger" aria-haspopup="listbox">
+          <span class="c-select-label">Todos los roles</span>
+          <svg class="c-select-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+            <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="c-select-panel" role="listbox">
+          <div class="c-select-option selected" data-value="">Todos los roles</div>
+          {% for rol in roles %}
+          <div class="c-select-option" data-value="{{ rol.nombre }}">{{ rol.nombre }}</div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="buscador-divider" aria-hidden="true"></div>
+      <div class="c-select" id="cs-mod">
+        <button type="button" class="c-select-trigger" aria-haspopup="listbox">
+          <span class="c-select-label">Todos los módulos</span>
+          <svg class="c-select-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+            <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="c-select-panel" role="listbox">
+          <div class="c-select-option selected" data-value="">Todos los módulos</div>
+          {% for m in modulos %}
+          <div class="c-select-option" data-value="{{ m.nombre }}">{{ m.nombre }}</div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="roles-panel">
+    <div class="roles-panel-head">
+      <span class="roles-panel-label">Permisos por rol y módulo</span>
+      {% if perms.puede_crear %}
+      <button type="button" class="roles-btn-nuevo" onclick="abrirModal()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/>
+        </svg>
+        Nuevo permiso
+      </button>
+      {% endif %}
+    </div>
+
+    <table class="roles-tabla">
+      <thead>
+        <tr>
+          <th>Rol</th>
+          <th>Módulo</th>
+          <th class="centrado">Ver</th>
+          <th class="centrado">Crear</th>
+          <th class="centrado">Editar</th>
+          <th class="centrado">Elim.</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in permisos %}
+        <tr>
+          <td class="celda-nombre">{{ p.rol.nombre }}</td>
+          <td>{{ p.modulo.nombre }}</td>
+          <td class="centrado">{% if p.puede_ver %}<span class="perm-si" aria-label="Sí">●</span>{% else %}<span class="perm-no" aria-label="No">—</span>{% endif %}</td>
+          <td class="centrado">{% if p.puede_crear %}<span class="perm-si" aria-label="Sí">●</span>{% else %}<span class="perm-no" aria-label="No">—</span>{% endif %}</td>
+          <td class="centrado">{% if p.puede_editar %}<span class="perm-si" aria-label="Sí">●</span>{% else %}<span class="perm-no" aria-label="No">—</span>{% endif %}</td>
+          <td class="centrado">{% if p.puede_eliminar %}<span class="perm-si" aria-label="Sí">●</span>{% else %}<span class="perm-no" aria-label="No">—</span>{% endif %}</td>
+          <td class="celda-acciones">
+            <div class="acciones-wrap">
+              {% if perms.puede_editar %}
+              <button type="button" class="btn-editar"
+                onclick="abrirModalEditar({{ p.id }},{{ p.puede_ver|yesno:'true,false' }},{{ p.puede_crear|yesno:'true,false' }},{{ p.puede_editar|yesno:'true,false' }},{{ p.puede_eliminar|yesno:'true,false' }},'{{ p.rol.nombre|escapejs }}','{{ p.modulo.nombre|escapejs }}')">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                  <path d="M8.5 1.5l2 2L4 10H2v-2L8.5 1.5z"/>
+                </svg>
+                Editar
+              </button>
+              {% endif %}
+              {% if perms.puede_eliminar %}
+              <form method="post" class="form-inline">
+                {% csrf_token %}
+                <input type="hidden" name="accion" value="eliminar_permiso">
+                <input type="hidden" name="permiso_id" value="{{ p.id }}">
+                <button type="button" class="btn-eliminar"
+                  onclick="abrirConfirm(this.closest('form'), '{{ p.rol.nombre|escapejs }} / {{ p.modulo.nombre|escapejs }}')">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                    <polyline points="1,3 11,3"/><path d="M4,3V1h4v2M2,3l1,8h6l1-8"/>
+                  </svg>
+                  Eliminar
+                </button>
+              </form>
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr class="fila-vacia">
+          <td colspan="7">Sin permisos configurados · Usa el botón para crear el primero</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <nav class="paginador" id="paginador-nav" aria-label="Paginación" style="margin-top:14px"></nav>
+</div>
+
+<!-- MODAL -->
+<div class="roles-overlay" id="modal-overlay" onclick="cerrarModalOverlay(event)">
+  <div class="roles-modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+    <div class="roles-modal-header">
+      <p class="roles-modal-titulo" id="modal-titulo">Nuevo permiso</p>
+      <button type="button" class="roles-modal-cerrar" onclick="cerrarModal()" aria-label="Cerrar">✕</button>
+    </div>
+    <form method="post" id="form-permiso" class="roles-form">
+      {% csrf_token %}
+      <input type="hidden" name="accion" value="crear_permiso" id="perm-accion">
+      <input type="hidden" name="permiso_id" id="perm-id-hidden">
+      <div class="mant-campo" id="perm-rol-wrap">
+        <label>Rol</label>
+        <input type="hidden" name="rol_id" id="perm-rol-val">
+        <div class="c-select c-select--m c-select--full" id="cs-perm-rol">
+          <button type="button" class="c-select-trigger" aria-haspopup="listbox">
+            <span class="c-select-label">— Seleccionar —</span>
+            <svg class="c-select-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="c-select-panel" role="listbox">
+            <div class="c-select-option selected" data-value="">— Seleccionar —</div>
+            {% for rol in roles %}
+            <div class="c-select-option" data-value="{{ rol.id }}">{{ rol.nombre }}</div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="mant-campo" id="perm-modulo-wrap">
+        <label>Módulo</label>
+        <input type="hidden" name="modulo_id" id="perm-modulo-val">
+        <div class="c-select c-select--m c-select--full" id="cs-perm-modulo">
+          <button type="button" class="c-select-trigger" aria-haspopup="listbox">
+            <span class="c-select-label">— Seleccionar —</span>
+            <svg class="c-select-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="c-select-panel" role="listbox">
+            <div class="c-select-option selected" data-value="">— Seleccionar —</div>
+            {% for m in modulos %}
+            <div class="c-select-option" data-value="{{ m.id }}">{{ m.nombre }}</div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <p class="mant-campo-titulo texto-mono">Permisos</p>
+      <label class="mant-check"><input type="checkbox" name="puede_ver" id="perm-ver" checked> Ver</label>
+      <label class="mant-check"><input type="checkbox" name="puede_crear" id="perm-crear"> Crear</label>
+      <label class="mant-check"><input type="checkbox" name="puede_editar" id="perm-editar"> Editar</label>
+      <label class="mant-check"><input type="checkbox" name="puede_eliminar" id="perm-eliminar"> Eliminar</label>
+      <div class="roles-modal-acciones">
+        <button type="submit" class="mant-btn-primario">Guardar</button>
+        <button type="button" class="mant-btn-secundario" onclick="cerrarModal()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL CONFIRMACIÓN ELIMINAR -->
+<div class="confirm-overlay" id="confirm-overlay" onclick="if(event.target===this)cerrarConfirm()">
+  <div class="confirm-modal" role="alertdialog" aria-modal="true" aria-labelledby="confirm-titulo">
+    <div class="confirm-modal-barra"></div>
+    <div class="confirm-modal-cuerpo">
+      <div class="confirm-modal-icono" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="2,5 16,5"/>
+          <path d="M6,5V3h6v2M4,5l1.2,11h7.6L14,5"/>
+          <line x1="9" y1="8" x2="9" y2="13"/>
+          <line x1="6.5" y1="8" x2="6.8" y2="13"/>
+          <line x1="11.5" y1="8" x2="11.2" y2="13"/>
+        </svg>
+      </div>
+      <p class="confirm-modal-titulo" id="confirm-titulo">¿Eliminar permiso?</p>
+      <p class="confirm-modal-texto">
+        Esta acción eliminará el permiso de <span class="confirm-modal-nombre" id="confirm-nombre"></span>
+        de forma permanente y no se puede deshacer.
+      </p>
+    </div>
+    <div class="confirm-modal-acciones">
+      <button type="button" class="confirm-btn-eliminar" id="confirm-btn-ok" onclick="confirmarEliminar()">
+        Eliminar
+      </button>
+      <button type="button" class="confirm-btn-cancelar" onclick="cerrarConfirm()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

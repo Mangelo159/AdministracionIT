@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme {
+  /* Paleta Consola TIC */
+  --color-ink:        #0A1628;
+  --color-ink-2:      #0F1F38;
+  --color-azul:       #2D7FF9;
+  --color-azul-hover: #1C6BE3;
+  --color-cian:       #22D3EE;
+  --color-hueso:      #F6F8FB;
+  --color-niebla:     #8A97AB;
+  --color-error:      #E5484D;
+  --color-ok:         #30C48D;
+
+  /* Tipografía */
+  --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+
+  /* Radio de borde — 14px en cards y botones principales */
+  --radius-card: 14px;
+}
+
+/* Escanear todos los templates y JS de la app */
+@source "../../templates/**/*.html";
+@source "../js/**/*.js";

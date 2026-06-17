@@ -1,0 +1,109 @@
+{% extends "basebs.html" %}
+{% block pagetitle %}Mantenimiento{% endblock %}
+
+{% block extrahead %}{% endblock %}
+
+{% block canvas %}
+<header class="hub-cabecera">
+  <div class="hub-cab-inner">
+    <div class="hub-cab-texto">
+      <div class="hub-cab-acento" aria-hidden="true"></div>
+      <div>
+        <p class="eyebrow">Administración TIC · Mantenimiento</p>
+        <h1 class="hub-titulo">Mantenimiento</h1>
+        <p class="hub-subtitulo">Configura los roles, módulos y permisos que gobiernan el acceso a la consola.</p>
+      </div>
+    </div>
+    <a href="/" class="roles-btn-volver">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Atrás
+    </a>
+  </div>
+</header>
+
+<div class="roles-body">
+<section class="mant-grid" aria-label="Secciones de mantenimiento">
+
+  <a href="?action=roles" class="mant-card">
+    <span class="mant-card-icono" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none">
+        <circle cx="9" cy="8" r="3.2" stroke="currentColor" stroke-width="2"/>
+        <path d="M3.5 19c.8-3 3-4.5 5.5-4.5S13.7 16 14.5 19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M16 4.5c1.6.4 2.7 1.8 2.7 3.5S17.6 11.1 16 11.5M17.5 14.7c1.8.7 2.8 2.2 3.2 4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </span>
+    <span class="mant-card-texto">
+      <span class="mant-card-nombre">Roles</span>
+      <span class="mant-card-desc texto-mono">Perfiles de acceso del personal</span>
+    </span>
+    <span class="mant-card-conteo texto-mono">{{ roles|length }} registro{{ roles|length|pluralize:"s" }}</span>
+    <svg class="mant-card-flecha" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+
+  <a href="?action=modulo" class="mant-card">
+    <span class="mant-card-icono" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none">
+        <rect x="3" y="3" width="8" height="8" rx="2" stroke="currentColor" stroke-width="2"/>
+        <rect x="13" y="3" width="8" height="8" rx="2" stroke="currentColor" stroke-width="2"/>
+        <rect x="3" y="13" width="8" height="8" rx="2" stroke="currentColor" stroke-width="2"/>
+        <rect x="13" y="13" width="8" height="8" rx="2" stroke="currentColor" stroke-width="2"/>
+      </svg>
+    </span>
+    <span class="mant-card-texto">
+      <span class="mant-card-nombre">Módulos</span>
+      <span class="mant-card-desc texto-mono">Pantallas y rutas del sistema</span>
+    </span>
+    <span class="mant-card-conteo texto-mono">{{ modulos|length }} registro{{ modulos|length|pluralize:"s" }}</span>
+    <svg class="mant-card-flecha" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+
+  <a href="?action=asignaciones" class="mant-card">
+    <span class="mant-card-icono" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none">
+        <circle cx="9" cy="8" r="3.2" stroke="currentColor" stroke-width="2"/>
+        <path d="M3.5 19c.8-3 3-4.5 5.5-4.5S13.7 16 14.5 19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M15.5 9.5l2 2 4-4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
+    <span class="mant-card-texto">
+      <span class="mant-card-nombre">Asignaciones</span>
+      <span class="mant-card-desc texto-mono">Vínculo usuario → rol</span>
+    </span>
+    <span class="mant-card-conteo texto-mono">{{ asignaciones|length }} registro{{ asignaciones|length|pluralize:"s" }}</span>
+    <svg class="mant-card-flecha" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+
+  <a href="?action=permisos" class="mant-card">
+    <span class="mant-card-icono" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none">
+        <rect x="4" y="10" width="16" height="10" rx="2.5" stroke="currentColor" stroke-width="2"/>
+        <path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="12" cy="15" r="1.6" fill="currentColor"/>
+      </svg>
+    </span>
+    <span class="mant-card-texto">
+      <span class="mant-card-nombre">Permisos</span>
+      <span class="mant-card-desc texto-mono">Acciones por rol y módulo</span>
+    </span>
+    <span class="mant-card-conteo texto-mono">{{ permisos|length }} registro{{ permisos|length|pluralize:"s" }}</span>
+    <svg class="mant-card-flecha" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+
+</section>
+</div>
+
+{% endblock %}
+
+{% block moreblock %}
+
+{% endblock %}

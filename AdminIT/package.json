@@ -1,0 +1,17 @@
+{
+  "name": "adminit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "tw:watch": "npx @tailwindcss/cli -i static/css/input.css -o static/css/tailwind.css --watch",
+    "tw:build": "npx @tailwindcss/cli -i static/css/input.css -o static/css/tailwind.css --minify"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.3.0",
+    "tailwindcss": "^4.3.0"
+  }
+}

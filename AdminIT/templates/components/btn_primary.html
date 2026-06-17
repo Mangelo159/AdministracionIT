@@ -1,0 +1,13 @@
+{# Botón primario — uso: {% include 'components/btn_primary.html' with label="Guardar" icon="fa-save" type="submit" %} #}
+<button type="{{ type|default:'button' }}"
+        {% if disabled %}disabled{% endif %}
+        class="inline-flex items-center gap-2 px-5 py-2.5
+               bg-azul hover:bg-azul-hover
+               text-white font-semibold text-sm tracking-wide
+               rounded-[14px] border-0 cursor-pointer transition-colors
+               focus:outline-none focus:ring-4 focus:ring-azul/[14%]
+               disabled:opacity-50 disabled:cursor-not-allowed
+               shadow-[0_8px_20px_-8px_rgba(45,127,249,0.5)]">
+    {% if icon %}<i class="fa-solid {{ icon }}"></i>{% endif %}
+    {{ label }}
+</button>

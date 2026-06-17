@@ -1,0 +1,11 @@
+{# Card blanca con radio 14px — uso: {% include 'components/card.html' with title="Título" %} ... {% endinclude %} #}
+{# O simplemente usa las clases directamente en tu template: #}
+{# <div class="bg-white rounded-[14px] border border-niebla/[22%] shadow-[0_24px_60px_-24px_rgba(10,22,40,0.18)] p-6"> #}
+<div class="bg-white rounded-[14px] border border-niebla/[22%]
+            shadow-[0_24px_60px_-24px_rgba(10,22,40,0.18)]
+            p-{{ padding|default:'6' }}">
+    {% if title %}
+        <h3 class="font-semibold text-ink text-base mb-4 pb-3 border-b border-niebla/[22%]">{{ title }}</h3>
+    {% endif %}
+    {% block card_content %}{% endblock %}
+</div>

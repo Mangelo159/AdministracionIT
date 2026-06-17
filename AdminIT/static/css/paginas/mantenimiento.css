@@ -1,0 +1,529 @@
+/* ============================================================
+   Página: Mantenimiento (hub + secciones)
+   Sistema: Consola TIC — solo tokens var(--*), nada inventado.
+   ============================================================ */
+
+/* ── Helpers de tipografía (usados en templates pero sin carga de consola-tic) */
+.eyebrow {
+    margin: 0 0 8px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--niebla);
+}
+
+.texto-mono {
+    font-family: "IBM Plex Mono", monospace;
+}
+
+/* ── Cabecera común ────────────────────────────────────────── */
+.mant-cabecera {
+    padding-bottom: 24px;
+    margin-bottom: 28px;
+    border-bottom: 1px solid var(--linea);
+    max-width: 1400px;
+}
+
+.mant-volver {
+    display: inline-block;
+    margin-bottom: 14px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--niebla);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+.mant-volver:hover { color: var(--azul); }
+.mant-volver:focus-visible {
+    outline: none;
+    color: var(--azul);
+    box-shadow: 0 0 0 4px rgba(45, 127, 249, 0.14);
+    border-radius: 6px;
+}
+
+.mant-titulo {
+    margin: 10px 0 0;
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: var(--ink);
+}
+
+.mant-subtitulo {
+    margin: 8px 0 0;
+    font-size: 14px;
+    color: var(--niebla);
+    max-width: 60ch;
+}
+
+/* ── Hub: grid de cards ────────────────────────────────────── */
+.mant-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 14px;
+    max-width: 1400px;
+}
+
+.mant-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px;
+    background: #FFFFFF;
+    border: 1px solid var(--linea);
+    border-radius: var(--radio);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.mant-card:hover {
+    border-color: rgba(45, 127, 249, 0.45);
+    box-shadow: 0 14px 32px -18px rgba(10, 22, 40, 0.35);
+    transform: translateY(-1px);
+}
+
+.mant-card:focus-visible {
+    outline: none;
+    border-color: var(--azul);
+    box-shadow: 0 0 0 4px rgba(45, 127, 249, 0.14);
+}
+
+.mant-card-icono {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--hueso);
+    border: 1px solid var(--linea);
+    border-radius: 12px;
+    color: var(--niebla);
+    transition: color 0.2s ease;
+}
+.mant-card:hover .mant-card-icono { color: var(--azul); }
+.mant-card-icono svg { width: 24px; height: 24px; }
+
+.mant-card-texto {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.mant-card-nombre {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.mant-card-desc {
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    color: var(--niebla);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.mant-card-conteo {
+    margin-left: auto;
+    flex-shrink: 0;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--niebla);
+    border: 1px solid var(--linea);
+    border-radius: 999px;
+    padding: 3px 9px;
+}
+
+.mant-card-flecha {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: var(--niebla);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease;
+}
+.mant-card:hover .mant-card-flecha,
+.mant-card:focus-visible .mant-card-flecha {
+    opacity: 1;
+    transform: translateX(0);
+    color: var(--azul);
+}
+
+/* ── Secciones: lista + panel de formulario ────────────────── */
+.mant-layout {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.mant-lista { flex: 1; min-width: 0; }
+
+.mant-etiqueta {
+    margin: 0 0 14px;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--niebla);
+}
+
+.mant-panel {
+    width: 300px;
+    flex-shrink: 0;
+    background: #FFFFFF;
+    border: 1px solid var(--linea);
+    border-radius: var(--radio);
+    padding: 22px;
+    position: sticky;
+    top: 24px;
+}
+
+/* ── Tabla ─────────────────────────────────────────────────── */
+.mant-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.mant-tabla th {
+    text-align: left;
+    padding: 8px 12px 8px 0;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--niebla);
+    border-bottom: 1px solid var(--linea);
+}
+
+.mant-tabla td {
+    padding: 11px 12px 11px 0;
+    border-bottom: 1px solid rgba(138, 151, 171, 0.11);
+    color: var(--ink);
+    vertical-align: middle;
+}
+
+.mant-tabla tbody tr { transition: background 0.15s ease; }
+.mant-tabla tbody tr:hover { background: rgba(45, 127, 249, 0.05); }
+
+.mant-tabla .centrado { text-align: center; }
+.celda-nombre { font-weight: 600; }
+.celda-sec { color: var(--niebla); }
+.celda-ruta { font-size: 11px; color: var(--niebla); letter-spacing: 0.04em; }
+.celda-meta { font-size: 11px; color: var(--niebla); margin-left: 6px; }
+
+.celda-vacia {
+    padding: 28px 0;
+    font-size: 11.5px;
+    letter-spacing: 0.05em;
+    color: var(--niebla);
+    text-align: center;
+}
+
+.celda-acciones {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.form-inline { display: inline; margin-left: 10px; }
+
+.accion-editar,
+.accion-eliminar {
+    background: none;
+    border: none;
+    padding: 2px 4px;
+    font-size: 11.5px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.15s ease;
+}
+.accion-editar { color: var(--azul); }
+.accion-editar:hover { background: rgba(45, 127, 249, 0.1); }
+.accion-eliminar { color: var(--error); }
+.accion-eliminar:hover { background: rgba(229, 72, 77, 0.1); }
+.accion-editar:focus-visible,
+.accion-eliminar:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(45, 127, 249, 0.14);
+}
+
+/* ── Estados en tabla ──────────────────────────────────────── */
+.estado-si,
+.estado-no {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 999px;
+    padding: 3px 9px;
+    border: 1px solid;
+}
+.estado-si {
+    color: var(--ok);
+    border-color: rgba(48, 196, 141, 0.35);
+    background: rgba(48, 196, 141, 0.08);
+}
+.estado-no {
+    color: var(--error);
+    border-color: rgba(229, 72, 77, 0.35);
+    background: rgba(229, 72, 77, 0.08);
+}
+
+.perm-si { color: var(--ok); font-size: 10px; }
+.perm-no { color: var(--niebla); opacity: 0.6; }
+
+/* ── Formularios del panel ─────────────────────────────────── */
+.mant-campo { margin-bottom: 14px; }
+
+.mant-campo label,
+.mant-campo-titulo {
+    display: block;
+    margin: 0 0 6px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--niebla);
+}
+
+.mant-campo-titulo { margin-top: 4px; }
+
+.mant-campo input,
+.mant-campo select {
+    width: 100%;
+    height: 44px;
+    padding: 0 12px;
+    border: 1.5px solid var(--linea);
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--ink);
+    background: #FFFFFF;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.mant-campo input::placeholder { color: #B9C2CF; }
+.mant-campo .entrada-mono { font-family: "IBM Plex Mono", monospace; font-size: 12px; }
+
+.mant-campo input:focus,
+.mant-campo select:focus {
+    outline: none;
+    border-color: var(--azul);
+    box-shadow: 0 0 0 4px rgba(45, 127, 249, 0.14);
+}
+
+.mant-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: var(--ink);
+    cursor: pointer;
+}
+.mant-check input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--azul);
+}
+.mant-check input:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(45, 127, 249, 0.14);
+    border-radius: 4px;
+}
+
+.mant-panel-acciones {
+    display: flex;
+    gap: 8px;
+    margin-top: 18px;
+}
+
+.mant-btn-primario {
+    flex: 1;
+    height: 44px;
+    background: var(--azul);
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 10px 24px -10px rgba(45, 127, 249, 0.55);
+    transition: background 0.15s ease, transform 0.1s ease;
+}
+.mant-btn-primario:hover { background: var(--azul-hover); }
+.mant-btn-primario:active { transform: translateY(1px); }
+.mant-btn-primario:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(45, 127, 249, 0.3);
+}
+
+.mant-btn-secundario {
+    height: 44px;
+    padding: 0 14px;
+    background: transparent;
+    border: 1px solid var(--linea);
+    border-radius: 10px;
+    font-size: 12px;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+.mant-btn-secundario:hover { background: rgba(138, 151, 171, 0.12); }
+.mant-btn-secundario:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(45, 127, 249, 0.14);
+}
+
+/* ── Header con botón volver a la derecha ──────────────────── */
+.mant-cab-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.mant-btn-volver {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 38px;
+    padding: 0 16px;
+    border: 1px solid var(--linea);
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink);
+    text-decoration: none;
+    background: #FFFFFF;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+.mant-btn-volver:hover {
+    border-color: rgba(45, 127, 249, .45);
+    box-shadow: 0 4px 12px -6px rgba(10, 22, 40, .18);
+    color: var(--ink);
+}
+.mant-btn-volver:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(45, 127, 249, .14);
+}
+
+/* ── Fila encima de la tabla ───────────────────────────────── */
+.mant-tabla-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.mant-btn-nuevo {
+    height: 36px;
+    padding: 0 16px;
+    background: var(--azul);
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 6px 18px -8px rgba(45, 127, 249, .55);
+    transition: background .15s ease, transform .1s ease;
+}
+.mant-btn-nuevo:hover  { background: var(--azul-hover); }
+.mant-btn-nuevo:active { transform: translateY(1px); }
+.mant-btn-nuevo:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(45, 127, 249, .3);
+}
+
+/* ── Modal overlay ─────────────────────────────────────────── */
+.mant-modal-overlay {
+    position: fixed;
+    top: 0; right: 0; bottom: 0; left: 0;
+    background: rgba(10, 22, 40, .48);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1050;
+}
+.mant-modal {
+    background: #FFFFFF;
+    border-radius: var(--radio);
+    padding: 28px;
+    width: 420px;
+    max-width: calc(100vw - 32px);
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+    box-shadow: 0 24px 56px -12px rgba(10, 22, 40, .32);
+    transform: translateY(10px);
+    transition: transform .2s ease;
+}
+.mant-modal-overlay.abierto .mant-modal {
+    transform: translateY(0);
+}
+.mant-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 22px;
+}
+.mant-modal-titulo {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+}
+.mant-modal-cerrar {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1px solid var(--linea);
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--niebla);
+    font-size: 16px;
+    line-height: 1;
+    transition: background .15s ease, color .15s ease;
+}
+.mant-modal-cerrar:hover { background: rgba(138, 151, 171, .12); color: var(--ink); }
+.mant-modal-cerrar:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(45, 127, 249, .14);
+}
+
+/* ── Movimiento reducido ───────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    .mant-card,
+    .mant-card-flecha,
+    .mant-card-icono,
+    .mant-btn-primario { transition: none; }
+    .mant-card:hover { transform: none; }
+    .mant-modal-overlay, .mant-modal { transition: none; }
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 900px) {
+    .mant-layout { flex-direction: column-reverse; }
+    .mant-panel { width: 100%; position: static; }
+    .mant-lista { width: 100%; overflow-x: auto; }
+}
+
+@media (max-width: 560px) {
+    .mant-grid { grid-template-columns: 1fr; }
+}

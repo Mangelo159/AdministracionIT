@@ -1,0 +1,78 @@
+{% extends "basebs.html" %}
+{% block pagetitle %}Inicio{% endblock %}
+{% block canvas %}
+
+{% comment %} ── Cabecera de identidad ───────────────────────────────── {% endcomment %}
+<header class="hub-cabecera">
+  <div class="hub-cab-inner">
+    <div class="hub-cab-texto">
+      <div class="hub-cab-acento" aria-hidden="true"></div>
+      <div>
+        <p class="eyebrow">Consola TIC · ITB-UBE</p>
+        <h1 class="hub-titulo">Sistema de Administración TIC</h1>
+        {% if persona and persona.cedula %}
+          <p class="hub-subtitulo texto-mono">
+            CI {{ persona.cedula }}{% if persona.emailinst %} · {{ persona.emailinst }}{% endif %}
+          </p>
+        {% endif %}
+      </div>
+    </div>
+    <div>
+      <p class="eyebrow" style="margin-bottom:4px">Bienvenido</p>
+      <p class="inicio-nombre">
+        {% if persona and persona.nombre_completo %}
+          {{ persona.nombre_completo }}
+        {% else %}
+          {{ user.get_full_name|default:user.username }}
+        {% endif %}
+      </p>
+    </div>
+  </div>
+</header>
+
+{% comment %} ── Módulos por grupo ────────────────────────────────────── {% endcomment %}
+<section id="sitemap" class="inicio-modulos" aria-label="Módulos disponibles">
+  {% if grupos %}
+    {% for grupo in grupos %}
+      <div class="grupo-cabecera">
+        <span class="grupo-nombre texto-mono">{{ grupo.nombre }}</span>
+        <span class="grupo-conteo texto-mono">{{ grupo.modulos|length }} módulo{{ grupo.modulos|length|pluralize:"s" }}</span>
+        <span class="grupo-regla" aria-hidden="true"></span>
+      </div>
+
+      <div class="modulos-grid">
+        {% for modulo in grupo.modulos %}
+          <a href="{{ modulo.url }}" class="modulo-card">
+            <span class="modulo-icono">
+              <img src="{{ modulo.icono }}" alt="">
+            </span>
+            <span class="modulo-texto">
+              <span class="modulo-nombre">{{ modulo.nombre }}</span>
+              <span class="modulo-desc texto-mono">{{ modulo.descripcion }}</span>
+            </span>
+            <svg class="modulo-flecha" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  {% else %}
+    <div class="estado-vacio">
+      <div class="estado-vacio-icono" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="3" width="8" height="8" rx="2" stroke="currentColor" stroke-width="2"/>
+          <rect x="13" y="3" width="8" height="8" rx="2" stroke="currentColor" stroke-width="2"/>
+          <rect x="3" y="13" width="8" height="8" rx="2" stroke="currentColor" stroke-width="2"/>
+          <rect x="13" y="13" width="8" height="8" rx="2" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </div>
+      <p class="estado-vacio-titulo">Sin módulos asignados</p>
+      <p class="estado-vacio-texto texto-mono">Solicita acceso al administrador TIC para habilitar módulos en tu perfil.</p>
+    </div>
+  {% endif %}
+</section>
+
+{% endblock %}
+
+{% block extrahead %}{% endblock %}

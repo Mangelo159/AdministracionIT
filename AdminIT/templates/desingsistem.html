@@ -1,0 +1,1411 @@
+{% extends "basebs.html" %}
+{% block pagetitle %}Sistema de Diseño{% endblock %}
+
+{% block extrahead %}{% endblock %}
+
+{% block canvas %}
+<div class="ds-page">
+
+  {# ── Cabecera ── #}
+  <header class="ds-header">
+    <p class="eyebrow">Consola TIC · ITB-UBE</p>
+    <h1 class="titulo">Sistema de Diseño</h1>
+    <p class="subtitulo">Referencia visual de componentes, tokens y patrones del sistema</p>
+  </header>
+
+  {# ═══════════════════════════════════════════════════════════ #}
+  {# 01 — PALETA DE COLOR                                       #}
+  {# ═══════════════════════════════════════════════════════════ #}
+  <section class="ds-seccion" id="s-color">
+    <div class="ds-seccion-header">
+      <p class="eyebrow">01 — Tokens</p>
+      <h2 class="ds-seccion-titulo">Paleta de color</h2>
+    </div>
+    <div class="ds-swatch-grid">
+
+      <div class="ds-swatch">
+        <div class="ds-swatch-color" style="background:var(--ink)"></div>
+        <div class="ds-swatch-info">
+          <span class="ds-swatch-name">--ink</span>
+          <span class="ds-swatch-val">#0A1628</span>
+        </div>
+      </div>
+
+      <div class="ds-swatch">
+        <div class="ds-swatch-color" style="background:var(--ink-2)"></div>
+        <div class="ds-swatch-info">
+          <span class="ds-swatch-name">--ink-2</span>
+          <span class="ds-swatch-val">#0F1F38</span>
+        </div>
+      </div>
+
+      <div class="ds-swatch">
+        <div class="ds-swatch-color" style="background:var(--azul)"></div>
+        <div class="ds-swatch-info">
+          <span class="ds-swatch-name">--azul</span>
+          <span class="ds-swatch-val">#2D7FF9</span>
+        </div>
+      </div>
+
+      <div class="ds-swatch">
+        <div class="ds-swatch-color" style="background:var(--azul-hover)"></div>
+        <div class="ds-swatch-info">
+          <span class="ds-swatch-name">--azul-hover</span>
+          <span class="ds-swatch-val">#1C6BE3</span>
+        </div>
+      </div>
+
+      <div class="ds-swatch">
+        <div class="ds-swatch-color" style="background:var(--cian)"></div>
+        <div class="ds-swatch-info">
+          <span class="ds-swatch-name">--cian</span>
+          <span class="ds-swatch-val">#22D3EE</span>
+        </div>
+      </div>
+
+      <div class="ds-swatch">
+        <div class="ds-swatch-color" style="background:var(--ok)"></div>
+        <div class="ds-swatch-info">
+          <span class="ds-swatch-name">--ok</span>
+          <span class="ds-swatch-val">#30C48D</span>
+        </div>
+      </div>
+
+      <div class="ds-swatch">
+        <div class="ds-swatch-color" style="background:var(--error)"></div>
+        <div class="ds-swatch-info">
+          <span class="ds-swatch-name">--error</span>
+          <span class="ds-swatch-val">#E5484D</span>
+        </div>
+      </div>
+
+      <div class="ds-swatch">
+        <div class="ds-swatch-color" style="background:var(--alerta-amarilla)"></div>
+        <div class="ds-swatch-info">
+          <span class="ds-swatch-name">--alerta-amarilla</span>
+          <span class="ds-swatch-val">#B45309</span>
+        </div>
+      </div>
+
+      <div class="ds-swatch">
+        <div class="ds-swatch-color" style="background:var(--niebla)"></div>
+        <div class="ds-swatch-info">
+          <span class="ds-swatch-name">--niebla</span>
+          <span class="ds-swatch-val">#8A97AB</span>
+        </div>
+      </div>
+
+      <div class="ds-swatch">
+        <div class="ds-swatch-color" style="background:rgba(138,151,171,0.22); border-bottom:1px solid var(--linea)"></div>
+        <div class="ds-swatch-info">
+          <span class="ds-swatch-name">--linea</span>
+          <span class="ds-swatch-val">rgba(138,151,171,.22)</span>
+        </div>
+      </div>
+
+      <div class="ds-swatch">
+        <div class="ds-swatch-color" style="background:var(--hueso); border-bottom:1px solid var(--linea)"></div>
+        <div class="ds-swatch-info">
+          <span class="ds-swatch-name">--hueso</span>
+          <span class="ds-swatch-val">#F6F8FB</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="separador"></div>
+
+  {# ═══════════════════════════════════════════════════════════ #}
+  {# 02 — TIPOGRAFÍA                                            #}
+  {# ═══════════════════════════════════════════════════════════ #}
+  <section class="ds-seccion" id="s-tipo">
+    <div class="ds-seccion-header">
+      <p class="eyebrow">02 — Tipografía</p>
+      <h2 class="ds-seccion-titulo">Escala tipográfica</h2>
+    </div>
+
+    <div class="ds-tipo-grid">
+      <div class="ds-tipo-item">
+        <p class="eyebrow">Eyebrow label</p>
+        <span class="ds-label">.eyebrow</span>
+      </div>
+      <div class="ds-tipo-item">
+        <h2 class="titulo" style="font-size:24px">Título de sección</h2>
+        <span class="ds-label">.titulo</span>
+      </div>
+      <div class="ds-tipo-item">
+        <p class="subtitulo">Subtítulo descriptivo del módulo o sección actual</p>
+        <span class="ds-label">.subtitulo</span>
+      </div>
+      <div class="ds-tipo-item">
+        <p class="texto-mono">TEXTO-MONO · 11px · 0.08em</p>
+        <span class="ds-label">.texto-mono</span>
+      </div>
+    </div>
+
+    <div class="ds-tipo-grid" style="margin-top:12px">
+      <div class="ds-tipo-item">
+        <p style="font-family:var(--fuente-sans); font-size:20px; font-weight:700; color:var(--ink)">IBM Plex Sans — AaBbCc 0123</p>
+        <p style="font-family:var(--fuente-sans); font-size:14px; color:var(--niebla)">Regular · Medium · SemiBold · Bold</p>
+        <span class="ds-label">--fuente-sans</span>
+      </div>
+      <div class="ds-tipo-item">
+        <p style="font-family:var(--fuente-mono); font-size:18px; color:var(--ink)">IBM Plex Mono — AaBbCc 0123</p>
+        <p style="font-family:var(--fuente-mono); font-size:12px; color:var(--niebla)">Regular · Medium</p>
+        <span class="ds-label">--fuente-mono</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="separador"></div>
+
+  {# ═══════════════════════════════════════════════════════════ #}
+  {# 03 — BOTONES                                               #}
+  {# ═══════════════════════════════════════════════════════════ #}
+  <section class="ds-seccion" id="s-btn">
+    <div class="ds-seccion-header">
+      <p class="eyebrow">03 — Acciones</p>
+      <h2 class="ds-seccion-titulo">Botones</h2>
+    </div>
+
+    <div class="ds-grid">
+      <div class="ds-item">
+        <div class="ds-item-demo">
+          <button class="btn btn-primario">
+            <i class="fa fa-plus"></i> Primario
+          </button>
+        </div>
+        <span class="ds-label">.btn-primario</span>
+      </div>
+      <div class="ds-item">
+        <div class="ds-item-demo">
+          <button class="btn btn-secundario">
+            <i class="fa fa-pen"></i> Secundario
+          </button>
+        </div>
+        <span class="ds-label">.btn-secundario</span>
+      </div>
+      <div class="ds-item">
+        <div class="ds-item-demo">
+          <button class="btn btn-peligro">
+            <i class="fa fa-trash"></i> Peligro
+          </button>
+        </div>
+        <span class="ds-label">.btn-peligro</span>
+      </div>
+      <div class="ds-item" style="width:320px">
+        <div class="ds-item-demo" style="width:100%">
+          <button class="btn btn-primario bloque" style="width:100%">
+            <i class="fa fa-floppy-disk"></i> Botón bloque
+          </button>
+        </div>
+        <span class="ds-label">.btn-primario.bloque</span>
+      </div>
+    </div>
+
+    <p class="texto-mono" style="margin-top:24px; margin-bottom:10px; color:var(--niebla)">ACCIONES DE FILA (TABLA)</p>
+    <div class="ds-grid">
+      <div class="ds-item">
+        <div class="ds-item-demo">
+          <button class="accion-editar"><i class="fa fa-pen"></i> Editar</button>
+        </div>
+        <span class="ds-label">.accion-editar</span>
+      </div>
+      <div class="ds-item">
+        <div class="ds-item-demo">
+          <button class="accion-eliminar"><i class="fa fa-trash"></i> Eliminar</button>
+        </div>
+        <span class="ds-label">.accion-eliminar</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="separador"></div>
+
+  {# ═══════════════════════════════════════════════════════════ #}
+  {# 04 — ALERTAS                                               #}
+  {# ═══════════════════════════════════════════════════════════ #}
+  <section class="ds-seccion" id="s-alertas">
+    <div class="ds-seccion-header">
+      <p class="eyebrow">04 — Retroalimentación</p>
+      <h2 class="ds-seccion-titulo">Alertas</h2>
+    </div>
+    <div class="ds-alertas-grid">
+
+      <div>
+        <div class="alerta alerta-exito">
+          <i class="fa fa-circle-check"></i>
+          <span>Operación completada con éxito. Los cambios han sido guardados correctamente.</span>
+        </div>
+        <span class="ds-label" style="display:block; margin-top:4px">.alerta.alerta-exito</span>
+      </div>
+
+      <div>
+        <div class="alerta alerta-error">
+          <i class="fa fa-circle-xmark"></i>
+          <span>Ha ocurrido un error al procesar la solicitud. Verifique los datos e intente nuevamente.</span>
+        </div>
+        <span class="ds-label" style="display:block; margin-top:4px">.alerta.alerta-error</span>
+      </div>
+
+      <div>
+        <div class="alerta alerta-info">
+          <i class="fa fa-circle-info"></i>
+          <span>Este es un mensaje informativo sobre el estado actual del sistema o proceso.</span>
+        </div>
+        <span class="ds-label" style="display:block; margin-top:4px">.alerta.alerta-info</span>
+      </div>
+
+      <div>
+        <div class="alerta alerta-advertencia">
+          <i class="fa fa-triangle-exclamation"></i>
+          <span>Advertencia: Esta acción podría tener consecuencias. Revise antes de continuar.</span>
+        </div>
+        <span class="ds-label" style="display:block; margin-top:4px">.alerta.alerta-advertencia</span>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="separador"></div>
+
+  {# ═══════════════════════════════════════════════════════════ #}
+  {# 05 — CHIPS Y BADGES                                        #}
+  {# ═══════════════════════════════════════════════════════════ #}
+  <section class="ds-seccion" id="s-chips">
+    <div class="ds-seccion-header">
+      <p class="eyebrow">05 — Estado</p>
+      <h2 class="ds-seccion-titulo">Chips y badges</h2>
+    </div>
+
+    <p class="texto-mono" style="margin-bottom:12px; color:var(--niebla)">CHIPS</p>
+    <div class="ds-grid" style="margin-bottom:28px">
+      <div class="ds-item">
+        <span class="chip chip-ok"><span class="punto"></span> Activo</span>
+        <span class="ds-label">.chip.chip-ok</span>
+      </div>
+      <div class="ds-item">
+        <span class="chip chip-error">Error</span>
+        <span class="ds-label">.chip.chip-error</span>
+      </div>
+      <div class="ds-item">
+        <span class="chip chip-neutro">Neutro</span>
+        <span class="ds-label">.chip.chip-neutro</span>
+      </div>
+      <div class="ds-item">
+        <span class="chip chip-azul">Info</span>
+        <span class="ds-label">.chip.chip-azul</span>
+      </div>
+    </div>
+
+    <p class="texto-mono" style="margin-bottom:12px; color:var(--niebla)">BADGES DE ESTADO (TABLA)</p>
+    <div class="ds-grid">
+      <div class="ds-item">
+        <span class="estado-si">Sí</span>
+        <span class="ds-label">.estado-si</span>
+      </div>
+      <div class="ds-item">
+        <span class="estado-no">No</span>
+        <span class="ds-label">.estado-no</span>
+      </div>
+      <div class="ds-item">
+        <span class="perm-si"><i class="fa fa-check"></i> Permiso</span>
+        <span class="ds-label">.perm-si</span>
+      </div>
+      <div class="ds-item">
+        <span class="perm-no"><i class="fa fa-minus"></i> Sin permiso</span>
+        <span class="ds-label">.perm-no</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="separador"></div>
+
+  {# ═══════════════════════════════════════════════════════════ #}
+  {# 06 — TARJETAS Y MÉTRICAS                                   #}
+  {# ═══════════════════════════════════════════════════════════ #}
+  <section class="ds-seccion" id="s-tarjetas">
+    <div class="ds-seccion-header">
+      <p class="eyebrow">06 — Contenedores</p>
+      <h2 class="ds-seccion-titulo">Tarjetas y métricas</h2>
+    </div>
+
+    <p class="texto-mono" style="margin-bottom:12px; color:var(--niebla)">TARJETAS BÁSICAS</p>
+    <div style="display:flex; gap:16px; flex-wrap:wrap; margin-bottom:28px">
+      <div class="tarjeta" style="flex:1; min-width:220px">
+        <p class="tarjeta-meta">MÓDULO · TIC</p>
+        <p class="tarjeta-titulo">Tarjeta estándar</p>
+        <p class="subtitulo" style="margin-top:6px">Descripción breve del contenido.</p>
+      </div>
+      <div class="tarjeta protagonista" style="flex:1; min-width:220px">
+        <p class="tarjeta-meta">MÓDULO · TIC</p>
+        <p class="tarjeta-titulo">Tarjeta protagonista</p>
+        <p class="subtitulo" style="margin-top:6px">Variante con sombra principal.</p>
+      </div>
+    </div>
+    <span class="ds-label" style="display:block; margin-bottom:24px">.tarjeta / .tarjeta.protagonista</span>
+
+    <p class="texto-mono" style="margin-bottom:12px; color:var(--niebla)">MÉTRICAS / KPI</p>
+    <div class="metricas">
+      <div class="metrica">
+        <p class="metrica-etiqueta">Total equipos</p>
+        <p class="metrica-valor">248</p>
+        <p class="metrica-delta positivo"><i class="fa fa-arrow-up"></i> +12 este mes</p>
+      </div>
+      <div class="metrica acento">
+        <p class="metrica-etiqueta">Activos hoy</p>
+        <p class="metrica-valor">197</p>
+        <p class="metrica-delta positivo"><i class="fa fa-arrow-up"></i> +5%</p>
+      </div>
+      <div class="metrica">
+        <p class="metrica-etiqueta">Incidentes abiertos</p>
+        <p class="metrica-valor">3</p>
+        <p class="metrica-delta negativo"><i class="fa fa-arrow-down"></i> -1 vs ayer</p>
+      </div>
+      <div class="metrica">
+        <p class="metrica-etiqueta">Sin asignar</p>
+        <p class="metrica-valor">14</p>
+        <p class="metrica-delta"><i class="fa fa-minus"></i> sin cambio</p>
+      </div>
+    </div>
+    <span class="ds-label" style="display:block; margin-top:8px">.metricas → .metrica / .metrica.acento</span>
+  </section>
+
+  <div class="separador"></div>
+
+  {# ═══════════════════════════════════════════════════════════ #}
+  {# 07 — FORMULARIOS                                           #}
+  {# ═══════════════════════════════════════════════════════════ #}
+  <section class="ds-seccion" id="s-forms">
+    <div class="ds-seccion-header">
+      <p class="eyebrow">07 — Entrada de datos</p>
+      <h2 class="ds-seccion-titulo">Formularios</h2>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:20px">
+
+      <div>
+        <div class="campo">
+          <label>Campo de texto</label>
+          <div class="control">
+            <input type="text" placeholder="Escribe algo...">
+          </div>
+        </div>
+        <span class="ds-label" style="display:block; margin-top:4px">.control (input)</span>
+      </div>
+
+      <div>
+        <div class="campo">
+          <label>Con ícono de búsqueda</label>
+          <div class="control con-icono">
+            <svg class="icono" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="text" placeholder="Buscar...">
+          </div>
+        </div>
+        <span class="ds-label" style="display:block; margin-top:4px">.control.con-icono</span>
+      </div>
+
+      <div>
+        <div class="campo">
+          <label>Estado de error</label>
+          <div class="control">
+            <input type="text" class="invalido" value="valor incorrecto">
+          </div>
+        </div>
+        <span class="ds-label" style="display:block; margin-top:4px">.control input.invalido</span>
+      </div>
+
+      <div>
+        <div class="campo">
+          <label>Selector</label>
+          <select class="select-ctrl" style="width:100%">
+            <option value="">-- Seleccionar --</option>
+            <option value="1">Opción A</option>
+            <option value="2">Opción B</option>
+            <option value="3">Opción C</option>
+          </select>
+        </div>
+        <span class="ds-label" style="display:block; margin-top:4px">.select-ctrl</span>
+      </div>
+
+      <div style="grid-column:span 2">
+        <div class="campo">
+          <label>Área de texto</label>
+          <div class="control">
+            <textarea placeholder="Escribe un mensaje detallado aquí..."></textarea>
+          </div>
+        </div>
+        <span class="ds-label" style="display:block; margin-top:4px">.control (textarea)</span>
+      </div>
+
+    </div>
+
+    {# ── Checkboxes compactos ── #}
+    <p class="texto-mono" style="margin-top:28px; margin-bottom:12px; color:var(--niebla)">CHECKBOXES COMPACTOS (.mant-check)</p>
+    <div style="background:white; border:1px solid var(--linea); border-radius:var(--radio); padding:20px; max-width:340px">
+      <p class="mant-campo-titulo texto-mono">Permisos</p>
+      <label class="mant-check"><input type="checkbox" checked> Ver registros</label>
+      <label class="mant-check"><input type="checkbox" checked> Crear nuevos</label>
+      <label class="mant-check"><input type="checkbox"> Editar existentes</label>
+      <label class="mant-check"><input type="checkbox"> Eliminar</label>
+    </div>
+    <span class="ds-label" style="display:block; margin-top:6px">.mant-campo-titulo · .mant-check → input[checkbox]</span>
+
+    {# ── Buscador inline (estilo mpermisos) ── #}
+    <p class="texto-mono" style="margin-top:28px; margin-bottom:12px; color:var(--niebla)">BUSCADOR INLINE CON FILTROS (.buscador-card)</p>
+    <div class="buscador-card" style="max-width:680px">
+      <div class="buscador-fila">
+        <div class="buscador-control">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" class="buscador-icono" aria-hidden="true">
+            <circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M10 10l3.5 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <input type="search" placeholder="Buscar por nombre o módulo…" autocomplete="off">
+        </div>
+        <div class="buscador-divider" aria-hidden="true"></div>
+        <div class="c-select" id="ds-cs-rol">
+          <button type="button" class="c-select-trigger" aria-haspopup="listbox">
+            <span class="c-select-label">Todos los roles</span>
+            <svg class="c-select-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="c-select-panel" role="listbox">
+            <div class="c-select-option selected" data-value="">Todos los roles</div>
+            <div class="c-select-option" data-value="admin">Administrador</div>
+            <div class="c-select-option" data-value="coord">Coordinador TIC</div>
+            <div class="c-select-option" data-value="tecnico">Técnico</div>
+          </div>
+        </div>
+        <div class="buscador-divider" aria-hidden="true"></div>
+        <div class="c-select" id="ds-cs-mod">
+          <button type="button" class="c-select-trigger" aria-haspopup="listbox">
+            <span class="c-select-label">Todos los módulos</span>
+            <svg class="c-select-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="c-select-panel" role="listbox">
+            <div class="c-select-option selected" data-value="">Todos los módulos</div>
+            <div class="c-select-option" data-value="inv">Inventario</div>
+            <div class="c-select-option" data-value="rep">Reportes</div>
+            <div class="c-select-option" data-value="usr">Usuarios</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span class="ds-label" style="display:block; margin-top:6px">
+      .buscador-card → .buscador-fila → .buscador-control + .buscador-divider + .c-select
+    </span>
+
+    {# ── c-select standalone ── #}
+    <p class="texto-mono" style="margin-top:28px; margin-bottom:12px; color:var(--niebla)">DROPDOWN CUSTOM (.c-select)</p>
+    <div class="ds-grid">
+      <div class="ds-item" style="align-items:flex-start">
+        <div class="c-select" id="ds-cs-solo" style="min-width:200px">
+          <button type="button" class="c-select-trigger" style="width:100%" aria-haspopup="listbox">
+            <span class="c-select-label">Seleccionar opción</span>
+            <svg class="c-select-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="c-select-panel" role="listbox">
+            <div class="c-select-option selected" data-value="">Seleccionar opción</div>
+            <div class="c-select-option" data-value="a">Opción A</div>
+            <div class="c-select-option" data-value="b">Opción B</div>
+            <div class="c-select-option" data-value="c">Opción C</div>
+          </div>
+        </div>
+        <span class="ds-label" style="margin-top:8px">
+          .c-select → .c-select-trigger<br>.c-select-label · .c-select-chevron<br>.c-select-panel → .c-select-option
+        </span>
+      </div>
+    </div>
+
+    {# ── c-select tamaños ── #}
+    <p class="texto-mono" style="margin-top:28px; margin-bottom:12px; color:var(--niebla)">TAMAÑOS</p>
+    <div style="display:flex; align-items:flex-end; gap:20px; flex-wrap:wrap">
+
+      <div style="display:flex; flex-direction:column; gap:8px; align-items:flex-start">
+        <div class="c-select c-select--s" id="ds-cs-s" style="min-width:160px">
+          <button type="button" class="c-select-trigger" style="width:100%" aria-haspopup="listbox">
+            <span class="c-select-label">Small</span>
+            <svg class="c-select-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="c-select-panel" role="listbox">
+            <div class="c-select-option selected" data-value="">Small</div>
+            <div class="c-select-option" data-value="a">Opción A</div>
+            <div class="c-select-option" data-value="b">Opción B</div>
+          </div>
+        </div>
+        <span class="ds-label">.c-select--s · 28 px</span>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:8px; align-items:flex-start">
+        <div class="c-select c-select--m" id="ds-cs-m" style="min-width:160px">
+          <button type="button" class="c-select-trigger" style="width:100%" aria-haspopup="listbox">
+            <span class="c-select-label">Medium</span>
+            <svg class="c-select-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="c-select-panel" role="listbox">
+            <div class="c-select-option selected" data-value="">Medium</div>
+            <div class="c-select-option" data-value="a">Opción A</div>
+            <div class="c-select-option" data-value="b">Opción B</div>
+          </div>
+        </div>
+        <span class="ds-label">.c-select--m · 36 px (default)</span>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:8px; align-items:flex-start">
+        <div class="c-select c-select--l" id="ds-cs-l" style="min-width:160px">
+          <button type="button" class="c-select-trigger" style="width:100%" aria-haspopup="listbox">
+            <span class="c-select-label">Large</span>
+            <svg class="c-select-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="c-select-panel" role="listbox">
+            <div class="c-select-option selected" data-value="">Large</div>
+            <div class="c-select-option" data-value="a">Opción A</div>
+            <div class="c-select-option" data-value="b">Opción B</div>
+          </div>
+        </div>
+        <span class="ds-label">.c-select--l · 44 px</span>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:8px; align-items:flex-start">
+        <div class="c-select c-select--xl" id="ds-cs-xl" style="min-width:160px">
+          <button type="button" class="c-select-trigger" style="width:100%" aria-haspopup="listbox">
+            <span class="c-select-label">Extra Large</span>
+            <svg class="c-select-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="c-select-panel" role="listbox">
+            <div class="c-select-option selected" data-value="">Extra Large</div>
+            <div class="c-select-option" data-value="a">Opción A</div>
+            <div class="c-select-option" data-value="b">Opción B</div>
+          </div>
+        </div>
+        <span class="ds-label">.c-select--xl · 52 px</span>
+      </div>
+
+    </div>
+
+    {# ── c-select anchos ── #}
+    <p class="texto-mono" style="margin-top:28px; margin-bottom:12px; color:var(--niebla)">ANCHOS</p>
+    <div style="display:flex; flex-direction:column; gap:12px">
+
+      <div style="display:flex; flex-direction:column; gap:6px">
+        <div class="c-select c-select--full" id="ds-cs-full">
+          <button type="button" class="c-select-trigger" aria-haspopup="listbox">
+            <span class="c-select-label">Full width</span>
+            <svg class="c-select-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="c-select-panel" role="listbox">
+            <div class="c-select-option selected" data-value="">Full width</div>
+            <div class="c-select-option" data-value="a">Opción A</div>
+            <div class="c-select-option" data-value="b">Opción B</div>
+          </div>
+        </div>
+        <span class="ds-label">.c-select--full · 100% del contenedor</span>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:6px; max-width:280px">
+        <div class="c-select c-select--m c-select--full c-select--scroll" id="ds-cs-scroll">
+          <button type="button" class="c-select-trigger" aria-haspopup="listbox">
+            <span class="c-select-label">Selecciona usuario</span>
+            <svg class="c-select-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="c-select-panel" role="listbox">
+            <div class="c-select-buscar-wrap">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M10 10l3.5 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+              <input type="text" class="c-select-buscar" placeholder="Buscar usuario…" autocomplete="off">
+            </div>
+            <div class="c-select-option selected" data-value="">Selecciona usuario</div>
+            <div class="c-select-option" data-value="1">Ana García (1001)</div>
+            <div class="c-select-option" data-value="2">Carlos López (1002)</div>
+            <div class="c-select-option" data-value="3">Diana Mora (1003)</div>
+            <div class="c-select-option" data-value="4">Eduardo Ruiz (1004)</div>
+            <div class="c-select-option" data-value="5">Fernanda Silva (1005)</div>
+            <div class="c-select-option" data-value="6">Gabriel Torres (1006)</div>
+            <div class="c-select-option" data-value="7">Helena Vargas (1007)</div>
+          </div>
+        </div>
+        <span class="ds-label">.c-select--scroll · .c-select-buscar-wrap · búsqueda en tiempo real + scroll</span>
+      </div>
+
+      <div style="display:flex; align-items:flex-end; gap:16px; flex-wrap:wrap">
+
+        <div style="display:flex; flex-direction:column; gap:6px">
+          <div class="c-select c-select--w-xs" id="ds-cs-w-xs">
+            <button type="button" class="c-select-trigger" aria-haspopup="listbox">
+              <span class="c-select-label">XS</span>
+              <svg class="c-select-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+                <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="c-select-panel" role="listbox">
+              <div class="c-select-option selected" data-value="">XS</div>
+              <div class="c-select-option" data-value="a">Opción A</div>
+              <div class="c-select-option" data-value="b">Opción B</div>
+            </div>
+          </div>
+          <span class="ds-label">.c-select--w-xs · 120 px</span>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:6px">
+          <div class="c-select c-select--w-sm" id="ds-cs-w-sm">
+            <button type="button" class="c-select-trigger" aria-haspopup="listbox">
+              <span class="c-select-label">Small</span>
+              <svg class="c-select-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+                <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="c-select-panel" role="listbox">
+              <div class="c-select-option selected" data-value="">Small</div>
+              <div class="c-select-option" data-value="a">Opción A</div>
+              <div class="c-select-option" data-value="b">Opción B</div>
+            </div>
+          </div>
+          <span class="ds-label">.c-select--w-sm · 180 px</span>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:6px">
+          <div class="c-select c-select--w-md" id="ds-cs-w-md">
+            <button type="button" class="c-select-trigger" aria-haspopup="listbox">
+              <span class="c-select-label">Medium</span>
+              <svg class="c-select-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+                <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="c-select-panel" role="listbox">
+              <div class="c-select-option selected" data-value="">Medium</div>
+              <div class="c-select-option" data-value="a">Opción A</div>
+              <div class="c-select-option" data-value="b">Opción B</div>
+            </div>
+          </div>
+          <span class="ds-label">.c-select--w-md · 260 px</span>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:6px">
+          <div class="c-select c-select--w-lg" id="ds-cs-w-lg">
+            <button type="button" class="c-select-trigger" aria-haspopup="listbox">
+              <span class="c-select-label">Large</span>
+              <svg class="c-select-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+                <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="c-select-panel" role="listbox">
+              <div class="c-select-option selected" data-value="">Large</div>
+              <div class="c-select-option" data-value="a">Opción A</div>
+              <div class="c-select-option" data-value="b">Opción B</div>
+            </div>
+          </div>
+          <span class="ds-label">.c-select--w-lg · 360 px</span>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:6px">
+          <div class="c-select c-select--w-xl" id="ds-cs-w-xl">
+            <button type="button" class="c-select-trigger" aria-haspopup="listbox">
+              <span class="c-select-label">Extra Large</span>
+              <svg class="c-select-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+                <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="c-select-panel" role="listbox">
+              <div class="c-select-option selected" data-value="">Extra Large</div>
+              <div class="c-select-option" data-value="a">Opción A</div>
+              <div class="c-select-option" data-value="b">Opción B</div>
+            </div>
+          </div>
+          <span class="ds-label">.c-select--w-xl · 480 px</span>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+  <div class="separador"></div>
+
+  {# ═══════════════════════════════════════════════════════════ #}
+  {# 08 — TABLA                                                 #}
+  {# ═══════════════════════════════════════════════════════════ #}
+  <section class="ds-seccion" id="s-tabla">
+    <div class="ds-seccion-header">
+      <p class="eyebrow">08 — Datos tabulares</p>
+      <h2 class="ds-seccion-titulo">Tabla</h2>
+    </div>
+    <div class="panel-tabla">
+      <div class="panel-tabla-head">
+        <p class="tarjeta-titulo">Equipos registrados</p>
+        <button class="btn btn-primario" style="height:36px; padding:0 14px; font-size:13px">
+          <i class="fa fa-plus"></i> Nuevo
+        </button>
+      </div>
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Código</th>
+            <th>Estado</th>
+            <th>Responsable</th>
+            <th class="celda-acciones">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="celda-nombre">Laptop Dell XPS 15</td>
+            <td class="celda-sec">EQ-2024-001</td>
+            <td><span class="estado-si">Activo</span></td>
+            <td>Juan Pérez</td>
+            <td class="celda-acciones">
+              <button class="accion-editar"><i class="fa fa-pen"></i> Editar</button>
+              <button class="accion-eliminar"><i class="fa fa-trash"></i> Eliminar</button>
+            </td>
+          </tr>
+          <tr>
+            <td class="celda-nombre">Monitor HP 27"</td>
+            <td class="celda-sec">EQ-2024-002</td>
+            <td><span class="chip chip-neutro">Bodega</span></td>
+            <td class="celda-sec">—</td>
+            <td class="celda-acciones">
+              <button class="accion-editar"><i class="fa fa-pen"></i> Editar</button>
+              <button class="accion-eliminar"><i class="fa fa-trash"></i> Eliminar</button>
+            </td>
+          </tr>
+          <tr>
+            <td class="celda-nombre">Impresora Epson L3250</td>
+            <td class="celda-sec">EQ-2024-003</td>
+            <td><span class="estado-no">Baja</span></td>
+            <td>María García</td>
+            <td class="celda-acciones">
+              <button class="accion-editar"><i class="fa fa-pen"></i> Editar</button>
+              <button class="accion-eliminar"><i class="fa fa-trash"></i> Eliminar</button>
+            </td>
+          </tr>
+          <tr>
+            <td class="celda-nombre">Switch Cisco SG110</td>
+            <td class="celda-sec">EQ-2024-004</td>
+            <td><span class="chip chip-ok"><span class="punto"></span> Activo</span></td>
+            <td>Carlos López</td>
+            <td class="celda-acciones">
+              <button class="accion-editar"><i class="fa fa-pen"></i> Editar</button>
+              <button class="accion-eliminar"><i class="fa fa-trash"></i> Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="ds-label" style="display:block; margin-top:8px">
+      .panel-tabla → .tabla | .celda-nombre · .celda-sec · .celda-acciones · .accion-editar · .accion-eliminar
+    </span>
+  </section>
+
+  <div class="separador"></div>
+
+  {# ═══════════════════════════════════════════════════════════ #}
+  {# 09 — PAGINACIÓN                                            #}
+  {# ═══════════════════════════════════════════════════════════ #}
+  <section class="ds-seccion" id="s-pag">
+    <div class="ds-seccion-header">
+      <p class="eyebrow">09 — Navegación de datos</p>
+      <h2 class="ds-seccion-titulo">Paginación</h2>
+    </div>
+    <div style="background:white; border:1px solid var(--linea); border-radius:var(--radio); padding:20px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px">
+      <span class="paginador-info">Mostrando 1 – 10 de 48 resultados</span>
+      <div class="paginador">
+        <button class="paginador-btn" disabled>
+          <i class="fa fa-chevron-left"></i>
+        </button>
+        <span class="paginador-num activo">1</span>
+        <span class="paginador-num">2</span>
+        <span class="paginador-num">3</span>
+        <span class="paginador-elipsis">…</span>
+        <span class="paginador-num">5</span>
+        <button class="paginador-btn">
+          <i class="fa fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+    <span class="ds-label" style="display:block; margin-top:8px">
+      .paginador → .paginador-btn · .paginador-num · .paginador-num.activo · .paginador-elipsis · .paginador-info
+    </span>
+  </section>
+
+  <div class="separador"></div>
+
+  {# ═══════════════════════════════════════════════════════════ #}
+  {# 10 — SEPARADORES Y ESTADO VACÍO                            #}
+  {# ═══════════════════════════════════════════════════════════ #}
+  <section class="ds-seccion" id="s-util">
+    <div class="ds-seccion-header">
+      <p class="eyebrow">10 — Utilidades</p>
+      <h2 class="ds-seccion-titulo">Separadores y estado vacío</h2>
+    </div>
+    <div style="background:white; border:1px solid var(--linea); border-radius:var(--radio); padding:28px; display:flex; flex-direction:column; gap:24px">
+
+      <div>
+        <p class="texto-mono" style="color:var(--niebla); margin-bottom:12px">SEPARADOR SIMPLE</p>
+        <div class="separador"></div>
+        <span class="ds-label" style="display:block; margin-top:4px">.separador</span>
+      </div>
+
+      <div>
+        <p class="texto-mono" style="color:var(--niebla); margin-bottom:12px">SEPARADOR CON TEXTO</p>
+        <div class="separador-texto">O continúa con otra opción</div>
+        <span class="ds-label" style="display:block; margin-top:8px">.separador-texto</span>
+      </div>
+
+      <div>
+        <p class="texto-mono" style="color:var(--niebla); margin-bottom:12px">ESTADO VACÍO</p>
+        <div class="estado-vacio">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <path d="M9 9h6M9 12h4"/>
+          </svg>
+          <p class="subtitulo" style="margin-top:12px">No hay registros disponibles</p>
+          <p class="texto-mono" style="margin-top:4px">Agrega nuevos elementos para verlos aquí</p>
+        </div>
+        <span class="ds-label" style="display:block">.estado-vacio</span>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="separador"></div>
+
+  {# ═══════════════════════════════════════════════════════════ #}
+  {# 11 — TOKENS DE FORMA Y SOMBRA                              #}
+  {# ═══════════════════════════════════════════════════════════ #}
+  <section class="ds-seccion" id="s-tokens">
+    <div class="ds-seccion-header">
+      <p class="eyebrow">11 — Tokens visuales</p>
+      <h2 class="ds-seccion-titulo">Radios y sombras</h2>
+    </div>
+    <div class="ds-grid">
+
+      <div class="ds-item">
+        <div class="ds-item-demo" style="background:var(--hueso)">
+          <div style="width:88px; height:48px; background:var(--azul); border-radius:var(--radio)"></div>
+        </div>
+        <span class="ds-label">--radio · 14px</span>
+      </div>
+
+      <div class="ds-item">
+        <div class="ds-item-demo" style="background:var(--hueso)">
+          <div style="width:88px; height:48px; background:var(--azul); border-radius:var(--radio-sm)"></div>
+        </div>
+        <span class="ds-label">--radio-sm · 10px</span>
+      </div>
+
+      <div class="ds-item">
+        <div class="ds-item-demo" style="background:var(--hueso)">
+          <div style="width:88px; height:48px; background:white; border-radius:var(--radio); box-shadow:var(--sombra)"></div>
+        </div>
+        <span class="ds-label">--sombra</span>
+      </div>
+
+      <div class="ds-item">
+        <div class="ds-item-demo" style="background:var(--hueso)">
+          <div style="width:88px; height:48px; background:var(--azul); border-radius:var(--radio); box-shadow:var(--sombra-azul)"></div>
+        </div>
+        <span class="ds-label">--sombra-azul</span>
+      </div>
+
+    </div>
+  </section>
+
+
+  {# ═══════════════════════════════════════════════════════════ #}
+  {# 12 — HUB CABECERA                                          #}
+  {# ═══════════════════════════════════════════════════════════ #}
+  <section class="ds-seccion" id="s-hub">
+    <div class="ds-seccion-header">
+      <p class="eyebrow">12 — Encabezados</p>
+      <h2 class="ds-seccion-titulo">Hub cabecera</h2>
+    </div>
+    <div style="border-radius:var(--radio); overflow:hidden; border:1px solid var(--linea)">
+      <header class="hub-cabecera">
+        <div class="hub-cab-inner">
+          <div class="hub-cab-texto">
+            <div class="hub-cab-acento" aria-hidden="true"></div>
+            <div>
+              <p class="eyebrow">Consola TIC · Módulo</p>
+              <h2 class="hub-titulo">Título del hub</h2>
+              <p class="hub-subtitulo">Descripción breve del módulo o sección de mantenimiento.</p>
+            </div>
+          </div>
+          <a href="#" class="roles-btn-volver">
+            <i class="fa fa-arrow-left"></i> Volver
+          </a>
+        </div>
+      </header>
+    </div>
+    <span class="ds-label" style="display:block; margin-top:8px">
+      .hub-cabecera → .hub-cab-inner / .hub-cab-texto / .hub-cab-acento / .hub-titulo / .hub-subtitulo / .roles-btn-volver
+    </span>
+  </section>
+
+  <div class="separador"></div>
+
+  {# ═══════════════════════════════════════════════════════════ #}
+  {# 13 — MÓDULOS (grid de cards de acceso)                     #}
+  {# ═══════════════════════════════════════════════════════════ #}
+  <section class="ds-seccion" id="s-modulos">
+    <div class="ds-seccion-header">
+      <p class="eyebrow">13 — Navegación de módulos</p>
+      <h2 class="ds-seccion-titulo">Módulo cards</h2>
+    </div>
+
+    <div class="grupo-cabecera">
+      <span class="grupo-nombre texto-mono">Gestión Académica</span>
+      <span class="grupo-conteo texto-mono">3 módulos</span>
+      <span class="grupo-regla" aria-hidden="true"></span>
+    </div>
+    <span class="ds-label" style="display:block; margin-bottom:16px">.grupo-cabecera → .grupo-nombre · .grupo-conteo · .grupo-regla</span>
+
+    <div class="modulos-grid">
+      <a href="#" class="modulo-card">
+        <span class="modulo-icono">
+          <i class="fa fa-laptop" style="font-size:20px; color:var(--niebla)"></i>
+        </span>
+        <span class="modulo-texto">
+          <span class="modulo-nombre">Inventario de equipos</span>
+          <span class="modulo-desc">GESTIÓN · HARDWARE</span>
+        </span>
+        <svg class="modulo-flecha" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="#" class="modulo-card">
+        <span class="modulo-icono">
+          <i class="fa fa-users" style="font-size:20px; color:var(--niebla)"></i>
+        </span>
+        <span class="modulo-texto">
+          <span class="modulo-nombre">Gestión de usuarios</span>
+          <span class="modulo-desc">ACCESO · ROLES</span>
+        </span>
+        <svg class="modulo-flecha" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="#" class="modulo-card">
+        <span class="modulo-icono">
+          <i class="fa fa-chart-bar" style="font-size:20px; color:var(--niebla)"></i>
+        </span>
+        <span class="modulo-texto">
+          <span class="modulo-nombre">Reportes y estadísticas</span>
+          <span class="modulo-desc">ANÁLISIS · DATOS</span>
+        </span>
+        <svg class="modulo-flecha" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+    <span class="ds-label" style="display:block; margin-top:8px">
+      .modulos-grid → .modulo-card → .modulo-icono / .modulo-texto / .modulo-nombre / .modulo-desc / .modulo-flecha
+    </span>
+  </section>
+
+  <div class="separador"></div>
+
+  {# ═══════════════════════════════════════════════════════════ #}
+  {# 14 — LAYOUT CON PANEL LATERAL                              #}
+  {# ═══════════════════════════════════════════════════════════ #}
+  <section class="ds-seccion" id="s-layout-panel">
+    <div class="ds-seccion-header">
+      <p class="eyebrow">14 — Layout</p>
+      <h2 class="ds-seccion-titulo">Lista + panel lateral</h2>
+    </div>
+    <div class="mant-layout" style="max-height:260px; overflow:hidden; border-radius:var(--radio); border:1px solid var(--linea)">
+      <div class="mant-lista" style="padding:16px">
+        <p class="mant-etiqueta">Registros</p>
+        <table class="mant-tabla">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="celda-nombre">Módulo Inventario</td><td><span class="estado-si">Activo</span></td></tr>
+            <tr><td class="celda-nombre">Módulo Reportes</td><td><span class="estado-no">Inactivo</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="mant-panel">
+        <p class="mant-etiqueta">Formulario</p>
+        <div class="mant-campo">
+          <label>Nombre</label>
+          <input type="text" placeholder="Escribe aquí...">
+        </div>
+        <div class="mant-panel-acciones">
+          <button class="mant-btn-primario">Guardar</button>
+          <button class="mant-btn-secundario">Cancelar</button>
+        </div>
+      </div>
+    </div>
+    <span class="ds-label" style="display:block; margin-top:8px">
+      .mant-layout → .mant-lista + .mant-panel | .mant-etiqueta · .mant-tabla · .mant-campo · .mant-panel-acciones
+    </span>
+  </section>
+
+  <div class="separador"></div>
+
+  {# ═══════════════════════════════════════════════════════════ #}
+  {# 15 — BUSCADOR CARD                                         #}
+  {# ═══════════════════════════════════════════════════════════ #}
+  <section class="ds-seccion" id="s-buscador">
+    <div class="ds-seccion-header">
+      <p class="eyebrow">15 — Filtros</p>
+      <h2 class="ds-seccion-titulo">Buscador card</h2>
+    </div>
+    <div class="buscador-card" style="max-width:600px">
+      <div class="buscador-fila">
+        <div class="buscador-control">
+          <svg class="buscador-icono" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" placeholder="Buscar por nombre o código...">
+        </div>
+        <div class="buscador-divider"></div>
+        <select class="select-ctrl" style="border:none; background:transparent; height:100%; border-radius:0; padding-right:28px">
+          <option>Todos los estados</option>
+          <option>Activo</option>
+          <option>Inactivo</option>
+        </select>
+      </div>
+    </div>
+    <span class="ds-label" style="display:block; margin-top:8px">
+      .buscador-card → .buscador-fila → .buscador-control + .buscador-divider + selector
+    </span>
+  </section>
+
+  <div class="separador"></div>
+
+  {# ═══════════════════════════════════════════════════════════ #}
+  {# 16 — PANEL DE DATOS                                        #}
+  {# ═══════════════════════════════════════════════════════════ #}
+  <section class="ds-seccion" id="s-roles-panel">
+    <div class="ds-seccion-header">
+      <p class="eyebrow">16 — Contenedor de tabla</p>
+      <h2 class="ds-seccion-titulo">Panel de datos</h2>
+    </div>
+
+    <p class="texto-mono" style="margin-bottom:12px; color:var(--niebla)">CON FILAS</p>
+    <div class="roles-panel" style="margin-bottom:20px">
+      <div class="roles-panel-head">
+        <span class="roles-panel-label">Módulos registrados</span>
+        <button type="button" class="roles-btn-nuevo">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/>
+          </svg>
+          Nuevo
+        </button>
+      </div>
+      <table class="roles-tabla">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Ruta</th>
+            <th>Descripción</th>
+            <th class="centrado">Orden</th>
+            <th class="centrado">Estado</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="celda-nombre">Módulo Inventario</td>
+            <td class="celda-ruta">/inventario/lista</td>
+            <td class="celda-desc">Gestión de equipos TIC</td>
+            <td class="celda-orden"><span class="orden-badge">1</span></td>
+            <td class="centrado"><span class="estado-si">Activo</span></td>
+            <td class="celda-acciones">
+              <div class="acciones-wrap">
+                <button class="btn-editar">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8.5 1.5l2 2L4 10H2v-2L8.5 1.5z"/></svg>
+                  Editar
+                </button>
+                <button class="btn-eliminar">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><polyline points="1,3 11,3"/><path d="M4,3V1h4v2M2,3l1,8h6l1-8"/></svg>
+                  Eliminar
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="celda-nombre">Módulo Reportes</td>
+            <td class="celda-ruta">/reportes</td>
+            <td class="celda-desc">Análisis y estadísticas</td>
+            <td class="celda-orden"><span class="orden-badge">2</span></td>
+            <td class="centrado"><span class="estado-no">Inactivo</span></td>
+            <td class="celda-acciones">
+              <div class="acciones-wrap">
+                <button class="btn-editar">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8.5 1.5l2 2L4 10H2v-2L8.5 1.5z"/></svg>
+                  Editar
+                </button>
+                <button class="btn-eliminar">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><polyline points="1,3 11,3"/><path d="M4,3V1h4v2M2,3l1,8h6l1-8"/></svg>
+                  Eliminar
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="texto-mono" style="margin-bottom:12px; color:var(--niebla)">ESTADO VACÍO (.fila-vacia)</p>
+    <div class="roles-panel">
+      <div class="roles-panel-head">
+        <span class="roles-panel-label">Sin registros</span>
+        <button type="button" class="roles-btn-nuevo">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/>
+          </svg>
+          Nuevo
+        </button>
+      </div>
+      <table class="roles-tabla">
+        <thead><tr><th>Nombre</th><th>Descripción</th><th></th></tr></thead>
+        <tbody>
+          <tr class="fila-vacia">
+            <td colspan="3">Sin registros creados · Usa el botón para agregar el primero</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <span class="ds-label" style="display:block; margin-top:8px">
+      .roles-panel → .roles-panel-head · .roles-panel-label · .roles-btn-nuevo · .roles-tabla<br>
+      .celda-nombre · .celda-ruta · .celda-desc · .celda-orden · .orden-badge · .fila-vacia · .acciones-wrap
+    </span>
+  </section>
+
+  <div class="separador"></div>
+
+  {# ═══════════════════════════════════════════════════════════ #}
+  {# 17 — MODAL                                                 #}
+  {# ═══════════════════════════════════════════════════════════ #}
+  <section class="ds-seccion" id="s-modal">
+    <div class="ds-seccion-header">
+      <p class="eyebrow">17 — Diálogos</p>
+      <h2 class="ds-seccion-titulo">Modal</h2>
+    </div>
+
+    <div style="display:flex; gap:24px; flex-wrap:wrap; align-items:flex-start">
+
+      <div style="flex:1; min-width:280px">
+        <p class="texto-mono" style="margin-bottom:12px; color:var(--niebla)">MODAL CON FORMULARIO</p>
+        <div class="roles-modal" style="position:static; transform:none; box-shadow:var(--sombra); max-width:400px">
+          <div class="roles-modal-header">
+            <p class="roles-modal-titulo">Nuevo registro</p>
+            <button type="button" class="roles-modal-cerrar" aria-label="Cerrar">✕</button>
+          </div>
+          <div class="roles-form">
+            <div class="mant-campo">
+              <label for="ds-m-nombre">Nombre</label>
+              <input type="text" id="ds-m-nombre" placeholder="Ej. Coordinador TIC">
+            </div>
+            <div class="mant-campo">
+              <label for="ds-m-desc">Descripción</label>
+              <input type="text" id="ds-m-desc" placeholder="Descripción breve">
+            </div>
+            <div class="mant-campo">
+              <label for="ds-m-orden">Orden</label>
+              <input type="number" id="ds-m-orden" value="0">
+            </div>
+            <p class="mant-campo-titulo texto-mono">Permisos</p>
+            <label class="mant-check"><input type="checkbox" checked> Ver registros</label>
+            <label class="mant-check"><input type="checkbox"> Crear nuevos</label>
+            <label class="mant-check"><input type="checkbox"> Eliminar</label>
+            <div class="roles-modal-acciones">
+              <button class="mant-btn-primario">Guardar</button>
+              <button class="mant-btn-secundario">Cancelar</button>
+            </div>
+          </div>
+        </div>
+        <span class="ds-label" style="display:block; margin-top:6px">
+          .roles-modal → .roles-modal-header / .roles-modal-titulo / .roles-modal-cerrar<br>
+          .roles-form → .mant-campo · .mant-campo-titulo · .mant-check · .roles-modal-acciones
+        </span>
+      </div>
+
+      <div style="flex:1; min-width:280px">
+        <p class="texto-mono" style="margin-bottom:12px; color:var(--niebla)">OVERLAY (backdrop)</p>
+        <div style="background:rgba(10,22,40,0.52); border-radius:var(--radio); height:280px; display:flex; align-items:center; justify-content:center; position:relative">
+          <div style="font-family:var(--fuente-mono); font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:rgba(246,248,251,0.4); position:absolute; top:14px; left:50%; transform:translateX(-50%); white-space:nowrap">.roles-overlay</div>
+          <div class="roles-modal" style="position:static; transform:none; margin:0 16px; max-width:260px; width:100%">
+            <div class="roles-modal-header">
+              <p class="roles-modal-titulo" style="font-size:14px">Confirmar acción</p>
+              <button type="button" class="roles-modal-cerrar">✕</button>
+            </div>
+            <div class="roles-form" style="gap:10px">
+              <p style="font-size:13px; color:var(--niebla); margin:0">¿Estás seguro de que deseas continuar con esta operación?</p>
+              <div class="roles-modal-acciones">
+                <button class="mant-btn-primario" style="font-size:12px">Confirmar</button>
+                <button class="mant-btn-secundario" style="font-size:12px">Cancelar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="ds-label" style="display:block; margin-top:6px">
+          .roles-overlay → opacity:0 | .roles-overlay.abierto → opacity:1
+        </span>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="separador"></div>
+
+  {# ═══════════════════════════════════════════════════════════ #}
+  {# 18 — CARDS HUB DE MANTENIMIENTO                           #}
+  {# ═══════════════════════════════════════════════════════════ #}
+  <section class="ds-seccion" id="s-mant-cards">
+    <div class="ds-seccion-header">
+      <p class="eyebrow">18 — Navegación de secciones</p>
+      <h2 class="ds-seccion-titulo">Cards hub mantenimiento</h2>
+    </div>
+
+    <div style="background:white; border:1px solid var(--linea); border-radius:var(--radio); padding:28px">
+      <div class="mant-cabecera">
+        <p class="eyebrow">Consola TIC</p>
+        <h2 class="mant-titulo">Mantenimiento</h2>
+        <p class="mant-subtitulo">Administra roles, módulos, permisos y asignaciones del sistema.</p>
+      </div>
+      <div class="mant-grid">
+        <a href="#" class="mant-card">
+          <div class="mant-card-icono">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+            </svg>
+          </div>
+          <div class="mant-card-texto">
+            <span class="mant-card-nombre">Roles</span>
+            <span class="mant-card-desc">ACCESO · PERFILES</span>
+          </div>
+          <span class="mant-card-conteo">4</span>
+          <svg class="mant-card-flecha" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="#" class="mant-card">
+          <div class="mant-card-icono">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+          </div>
+          <div class="mant-card-texto">
+            <span class="mant-card-nombre">Módulos</span>
+            <span class="mant-card-desc">PANTALLAS · RUTAS</span>
+          </div>
+          <span class="mant-card-conteo">12</span>
+          <svg class="mant-card-flecha" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="#" class="mant-card">
+          <div class="mant-card-icono">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+            </svg>
+          </div>
+          <div class="mant-card-texto">
+            <span class="mant-card-nombre">Permisos</span>
+            <span class="mant-card-desc">ROLES · MÓDULOS</span>
+          </div>
+          <span class="mant-card-conteo">36</span>
+          <svg class="mant-card-flecha" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+    <span class="ds-label" style="display:block; margin-top:8px">
+      .mant-cabecera / .mant-titulo / .mant-subtitulo<br>
+      .mant-grid → .mant-card → .mant-card-icono / .mant-card-texto / .mant-card-nombre / .mant-card-desc / .mant-card-conteo / .mant-card-flecha
+    </span>
+  </section>
+
+  <div class="separador"></div>
+
+  {# ═══════════════════════════════════════════════════════════ #}
+  {# 19 — CABECERA OSCURA DE PÁGINA                            #}
+  {# ═══════════════════════════════════════════════════════════ #}
+  <section class="ds-seccion" id="s-cab-dark">
+    <div class="ds-seccion-header">
+      <p class="eyebrow">19 — Encabezado oscuro</p>
+      <h2 class="ds-seccion-titulo">Cabecera oscura de página</h2>
+    </div>
+    <div style="border-radius:var(--radio); overflow:hidden; border:1px solid var(--linea)">
+      <div class="cabecera-pagina-dark">
+        <div class="cab-inner">
+          <div>
+            <p class="eyebrow">Consola TIC · Módulo</p>
+            <h2 class="cab-titulo">Inventario de equipos</h2>
+            <p class="cab-subtitulo">Registro, seguimiento y control de activos tecnológicos del instituto.</p>
+          </div>
+          <a href="#" class="cab-btn-volver">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Volver
+          </a>
+        </div>
+      </div>
+    </div>
+    <span class="ds-label" style="display:block; margin-top:8px">
+      .cabecera-pagina-dark → .cab-inner / .eyebrow / .cab-titulo / .cab-subtitulo / .cab-btn-volver
+    </span>
+  </section>
+
+</div>
+{% endblock %}
+
+{% block js_pagina %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  /* Inicializa los c-select del showcase */
+  if (typeof initCSelect === 'function') {
+    initCSelect('ds-cs-rol');
+    initCSelect('ds-cs-mod');
+    initCSelect('ds-cs-solo');
+    initCSelect('ds-cs-s');
+    initCSelect('ds-cs-m');
+    initCSelect('ds-cs-l');
+    initCSelect('ds-cs-xl');
+    initCSelect('ds-cs-full');
+    initCSelect('ds-cs-w-xs');
+    initCSelect('ds-cs-w-sm');
+    initCSelect('ds-cs-w-md');
+    initCSelect('ds-cs-w-lg');
+    initCSelect('ds-cs-w-xl');
+    initCSelectSearch('ds-cs-scroll');
+  }
+  /* Cierra paneles al hacer click fuera */
+  document.addEventListener('click', function () {
+    document.querySelectorAll('.c-select').forEach(function (el) {
+      el.classList.remove('open');
+    });
+  });
+});
+</script>
+{% endblock %}

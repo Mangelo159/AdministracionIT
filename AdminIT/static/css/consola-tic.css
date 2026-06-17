@@ -1,0 +1,808 @@
+/* ============================================================
+   CONSOLA TIC — Sistema de Diseño
+   Administración TIC · ITB
+   Ubicación: static/css/consola-tic.css
+   Cargar en base.html ANTES de cualquier CSS de página.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+/* ------------------------------------------------------------
+   1. TOKENS
+   ------------------------------------------------------------ */
+:root {
+    --ink:        #0A1628;
+    --ink-2:      #0F1F38;
+    --azul:       #2D7FF9;
+    --azul-hover: #1C6BE3;
+    --cian: #ffffff;
+    --hueso:      #F6F8FB;
+    --niebla:     #8A97AB;
+    --linea:      rgba(138, 151, 171, 0.22);
+    --error:      #E5484D;
+    --ok:         #30C48D;
+    --alerta-amarilla: #B45309;
+    --radio:      14px;
+    --radio-sm:   10px;
+    --sombra:     0 24px 60px -24px rgba(10, 22, 40, 0.45);
+    --sombra-azul: 0 10px 24px -10px rgba(45, 127, 249, 0.55);
+    --fuente-sans: "IBM Plex Sans", system-ui, sans-serif;
+    --fuente-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+/* ------------------------------------------------------------
+   2. BASE
+   ------------------------------------------------------------ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+    font-family: var(--fuente-sans);
+    background: var(--hueso);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--azul); text-decoration: none; }
+a:hover { color: var(--azul-hover); }
+
+/* ------------------------------------------------------------
+   3. TIPOGRAFÍA DE SISTEMA
+   ------------------------------------------------------------ */
+.eyebrow {
+    font-family: var(--fuente-mono);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--azul);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.eyebrow::before {
+    content: "";
+    width: 26px;
+    height: 1px;
+    background: var(--azul);
+}
+
+.titulo {
+    font-size: clamp(26px, 3vw, 32px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+}
+
+.subtitulo {
+    font-size: 14.5px;
+    color: var(--niebla);
+}
+
+.texto-mono {
+    font-family: var(--fuente-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--niebla);
+}
+
+/* ------------------------------------------------------------
+   4. FORMULARIOS
+   ------------------------------------------------------------ */
+.campo { margin-bottom: 20px; }
+
+.campo label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    margin-bottom: 7px;
+}
+
+.control {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.control > svg.icono {
+    position: absolute;
+    left: 14px;
+    color: var(--niebla);
+    pointer-events: none;
+    transition: color 0.2s ease;
+}
+
+.control input,
+.control select,
+.control textarea {
+    width: 100%;
+    height: 50px;
+    padding: 0 14px;
+    font: inherit;
+    font-size: 15px;
+    color: var(--ink);
+    background: #fff;
+    border: 1.5px solid var(--linea);
+    border-radius: var(--radio);
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.control.con-icono input { padding-left: 44px; }
+.control.con-accion input { padding-right: 48px; }
+
+.control textarea { height: auto; min-height: 110px; padding: 12px 14px; resize: vertical; }
+
+.control input::placeholder,
+.control textarea::placeholder { color: #B9C2CF; }
+
+.control input:hover,
+.control select:hover,
+.control textarea:hover { border-color: rgba(138, 151, 171, 0.45); }
+
+.control input:focus,
+.control select:focus,
+.control textarea:focus {
+    border-color: var(--azul);
+    box-shadow: 0 0 0 4px rgba(45, 127, 249, 0.14);
+}
+
+.control:focus-within > svg.icono { color: var(--azul); }
+
+.control input.invalido { border-color: var(--error); }
+.control input.invalido:focus { box-shadow: 0 0 0 4px rgba(229, 72, 77, 0.12); }
+
+.btn-ojo {
+    position: absolute;
+    right: 6px;
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: var(--radio-sm);
+    background: transparent;
+    color: var(--niebla);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.btn-ojo:hover { background: rgba(138, 151, 171, 0.12); color: var(--ink); }
+
+.aviso-mayus {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    margin-top: 7px;
+    font-family: var(--fuente-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--alerta-amarilla);
+}
+
+.aviso-mayus.visible { display: flex; }
+
+.ayuda-campo {
+    margin-top: 6px;
+    font-size: 12.5px;
+    color: var(--niebla);
+}
+
+.error-campo {
+    margin-top: 6px;
+    font-size: 12.5px;
+    color: var(--error);
+}
+
+/* ------------------------------------------------------------
+   5. BOTONES
+   ------------------------------------------------------------ */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 44px;
+    padding: 0 22px;
+    font: inherit;
+    font-size: 14.5px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    border-radius: var(--radio);
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease,
+                box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.btn:active { transform: translateY(1px); }
+
+.btn svg { transition: transform 0.2s ease; }
+
+.btn-primario {
+    color: #fff;
+    background: var(--azul);
+    border: none;
+    box-shadow: var(--sombra-azul);
+}
+
+.btn-primario:hover {
+    background: var(--azul-hover);
+    box-shadow: 0 14px 28px -10px rgba(45, 127, 249, 0.65);
+}
+
+.btn-primario:hover svg { transform: translateX(3px); }
+
+.btn-primario.bloque { width: 100%; height: 52px; font-size: 15px; }
+
+.btn-secundario {
+    color: var(--ink);
+    background: transparent;
+    border: 1.5px solid var(--linea);
+}
+
+.btn-secundario:hover {
+    background: rgba(138, 151, 171, 0.12);
+    border-color: rgba(138, 151, 171, 0.45);
+}
+
+.btn-peligro {
+    color: #fff;
+    background: var(--error);
+    border: none;
+}
+
+.btn-peligro:hover { background: #C73A3F; }
+
+/* ------------------------------------------------------------
+   6. ALERTAS Y MENSAJES (compatible con django messages)
+   ------------------------------------------------------------ */
+.alerta {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 12px 14px;
+    border-radius: var(--radio-sm);
+    font-size: 13.5px;
+    line-height: 1.45;
+}
+
+.alerta svg { flex-shrink: 0; margin-top: 1px; }
+
+.alerta-error,
+.alerta.error {
+    background: rgba(229, 72, 77, 0.08);
+    border: 1px solid rgba(229, 72, 77, 0.35);
+    color: #B3261E;
+}
+
+.alerta-exito,
+.alerta.success {
+    background: rgba(48, 196, 141, 0.08);
+    border: 1px solid rgba(48, 196, 141, 0.35);
+    color: #1B7A57;
+}
+
+.alerta-info,
+.alerta.info {
+    background: rgba(45, 127, 249, 0.08);
+    border: 1px solid rgba(45, 127, 249, 0.35);
+    color: #1C5FC2;
+}
+
+.alerta-advertencia,
+.alerta.warning {
+    background: rgba(180, 83, 9, 0.08);
+    border: 1px solid rgba(180, 83, 9, 0.35);
+    color: var(--alerta-amarilla);
+}
+
+/* ------------------------------------------------------------
+   7. CHIPS DE ESTADO
+   ------------------------------------------------------------ */
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-family: var(--fuente-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.chip .punto {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.chip-ok {
+    color: var(--ok);
+    border: 1px solid rgba(48, 196, 141, 0.35);
+    background: rgba(48, 196, 141, 0.10);
+}
+
+.chip-ok .punto { animation: latido 2.2s ease-in-out infinite; }
+
+.chip-error {
+    color: var(--error);
+    border: 1px solid rgba(229, 72, 77, 0.35);
+    background: rgba(229, 72, 77, 0.10);
+}
+
+.chip-neutro {
+    color: var(--niebla);
+    border: 1px solid var(--linea);
+    background: rgba(138, 151, 171, 0.08);
+}
+
+.chip-azul {
+    color: var(--azul);
+    border: 1px solid rgba(45, 127, 249, 0.35);
+    background: rgba(45, 127, 249, 0.10);
+}
+
+@keyframes latido {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(48, 196, 141, 0.55); }
+    50%      { box-shadow: 0 0 0 6px rgba(48, 196, 141, 0); }
+}
+
+/* ------------------------------------------------------------
+   8. TARJETAS Y TELEMETRÍA
+   ------------------------------------------------------------ */
+.tarjeta {
+    background: #fff;
+    border: 1px solid var(--linea);
+    border-radius: var(--radio);
+    padding: 22px;
+}
+
+.tarjeta.protagonista { box-shadow: var(--sombra); }
+
+.tarjeta-titulo {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.tarjeta-meta {
+    font-family: var(--fuente-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--niebla);
+}
+
+/* tarjetas sobre fondos oscuros */
+.tele-item {
+    padding: 10px 16px;
+    border-radius: var(--radio-sm);
+    border: 1px solid rgba(246, 248, 251, 0.14);
+    background: rgba(246, 248, 251, 0.05);
+    backdrop-filter: blur(6px);
+    font-family: var(--fuente-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    color: rgba(246, 248, 251, 0.8);
+}
+
+.tele-item b {
+    display: block;
+    font-weight: 500;
+    color: var(--hueso);
+    font-size: 13px;
+    margin-top: 2px;
+}
+
+/* ------------------------------------------------------------
+   9. TABLAS
+   ------------------------------------------------------------ */
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border: 1px solid var(--linea);
+    border-radius: var(--radio);
+    overflow: hidden;
+}
+
+.tabla thead th {
+    font-family: var(--fuente-mono);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--niebla);
+    text-align: left;
+    padding: 12px 16px;
+    background: rgba(138, 151, 171, 0.06);
+    border-bottom: 1px solid var(--linea);
+}
+
+.tabla tbody td {
+    padding: 14px 16px;
+    font-size: 14px;
+    border-bottom: 1px solid var(--linea);
+}
+
+.tabla tbody tr:last-child td { border-bottom: none; }
+
+.tabla tbody tr {
+    transition: background 0.15s ease;
+}
+
+.tabla tbody tr:hover { background: rgba(45, 127, 249, 0.05); }
+
+/* ------------------------------------------------------------
+   10. LAYOUT DE MÓDULOS INTERNOS (sidebar + contenido)
+   ------------------------------------------------------------ */
+.app {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
+}
+
+.sidebar {
+    background: linear-gradient(180deg, var(--ink-2), var(--ink));
+    color: var(--hueso);
+    padding: 28px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sidebar .marca-sidebar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 10px 24px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(246, 248, 251, 0.10);
+}
+
+.sidebar .marca-sidebar img { height: 30px; filter: brightness(0) invert(1); }
+
+.sidebar .seccion-nav {
+    font-family: var(--fuente-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(246, 248, 251, 0.4);
+    padding: 16px 10px 6px;
+}
+
+.sidebar a.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 10px 12px;
+    border-radius: var(--radio-sm);
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(246, 248, 251, 0.72);
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.sidebar a.nav-item:hover {
+    background: rgba(246, 248, 251, 0.07);
+    color: var(--hueso);
+}
+
+.sidebar a.nav-item.activo {
+    background: rgba(45, 127, 249, 0.18);
+    color: #fff;
+    border-left: 2px solid var(--cian);
+}
+
+.contenido {
+    padding: clamp(28px, 4vw, 48px);
+    max-width: 1280px;
+}
+
+.cabecera-pagina {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+}
+
+/* ------------------------------------------------------------
+   11. FONDOS OSCUROS DECORATIVOS (paneles de identidad)
+   ------------------------------------------------------------ */
+.panel-oscuro {
+    position: relative;
+    overflow: hidden;
+    color: var(--hueso);
+    background:
+        radial-gradient(1100px 700px at 80% -10%, rgba(45, 127, 249, 0.28), transparent 60%),
+        radial-gradient(900px 600px at -10% 110%, rgba(34, 211, 238, 0.14), transparent 55%),
+        linear-gradient(160deg, var(--ink-2), var(--ink) 65%);
+}
+
+.panel-oscuro::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(246, 248, 251, 0.10) 1px, transparent 1px);
+    background-size: 26px 26px;
+    mask-image: radial-gradient(ellipse 90% 80% at 60% 40%, black 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 80% at 60% 40%, black 30%, transparent 75%);
+}
+
+.trazas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.traza { fill: none; stroke: rgba(45, 127, 249, 0.20); stroke-width: 1.5; }
+
+.pulso {
+    fill: none;
+    stroke: var(--cian);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-dasharray: 70 1200;
+    animation: viajar 7s linear infinite;
+    filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.8));
+}
+
+.pulso.p2 { animation-delay: 2.4s; animation-duration: 9s; stroke: var(--azul); }
+.pulso.p3 { animation-delay: 4.8s; animation-duration: 8s; }
+
+@keyframes viajar {
+    from { stroke-dashoffset: 1270; }
+    to   { stroke-dashoffset: 0; }
+}
+
+/* ------------------------------------------------------------
+   12. ACCESIBILIDAD
+   ------------------------------------------------------------ */
+:focus-visible {
+    outline: 3px solid rgba(45, 127, 249, 0.45);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pulso { animation: none; opacity: 0; }
+    .chip .punto { animation: none; }
+    * { transition: none !important; }
+}
+
+/* ------------------------------------------------------------
+   13. RESPONSIVE
+   ------------------------------------------------------------ */
+@media (max-width: 980px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar { flex-direction: row; flex-wrap: wrap; align-items: center; padding: 14px 16px; }
+    .sidebar .seccion-nav { display: none; }
+    .sidebar-pie { display: none; }
+    .panel-oscuro { display: none; }
+    .metricas { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 540px) {
+    .metricas { grid-template-columns: 1fr; }
+    .cabecera-pagina { flex-direction: column; align-items: flex-start; }
+}
+
+/* ------------------------------------------------------------
+   14. TABLA RESPONSIVE
+   ------------------------------------------------------------ */
+.tabla-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: var(--radio);
+    border: 1px solid var(--linea);
+    /* quitar el borde de .tabla cuando está dentro de wrapper */
+}
+
+.tabla-wrapper .tabla {
+    border: none;
+    border-radius: 0;
+}
+
+/* ------------------------------------------------------------
+   15. SIDEBAR — PIE DE PÁGINA (info de usuario)
+   ------------------------------------------------------------ */
+.sidebar-pie {
+    margin-top: auto;
+    padding: 16px 10px 0;
+    border-top: 1px solid rgba(246, 248, 251, 0.10);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar-pie .avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(45, 127, 249, 0.22);
+    display: grid;
+    place-items: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.sidebar-pie .usuario-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.sidebar-pie .usuario-nombre {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--hueso);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebar-pie .usuario-rol {
+    font-family: var(--fuente-mono);
+    font-size: 10px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: rgba(246, 248, 251, 0.45);
+}
+
+.sidebar-pie .btn-salir {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radio-sm);
+    background: transparent;
+    border: none;
+    color: rgba(246, 248, 251, 0.45);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+    text-decoration: none;
+}
+
+.sidebar-pie .btn-salir:hover {
+    background: rgba(229, 72, 77, 0.15);
+    color: var(--error);
+}
+
+/* ------------------------------------------------------------
+   16. GRID DE MÉTRICAS (tarjetas KPI para dashboard)
+   ------------------------------------------------------------ */
+.metricas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 16px;
+}
+
+.metrica {
+    background: #fff;
+    border: 1px solid var(--linea);
+    border-radius: var(--radio);
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.metrica-etiqueta {
+    font-family: var(--fuente-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--niebla);
+}
+
+.metrica-valor {
+    font-size: clamp(26px, 3vw, 34px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--ink);
+}
+
+.metrica-delta {
+    font-size: 12px;
+    color: var(--niebla);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.metrica-delta.positivo { color: var(--ok); }
+.metrica-delta.negativo { color: var(--error); }
+
+.metrica.acento { border-color: rgba(45, 127, 249, 0.35); background: rgba(45, 127, 249, 0.04); }
+.metrica.acento .metrica-valor { color: var(--azul); }
+
+/* ------------------------------------------------------------
+   17. SEPARADOR Y UTILIDADES
+   ------------------------------------------------------------ */
+.separador {
+    border: none;
+    border-top: 1px solid var(--linea);
+    margin: 24px 0;
+}
+
+.separador-texto {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--fuente-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--niebla);
+}
+
+.separador-texto::before,
+.separador-texto::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--linea);
+}
+
+.estado-vacio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 48px 24px;
+    text-align: center;
+    color: var(--niebla);
+}
+
+.estado-vacio svg { opacity: 0.4; }
+
+.estado-vacio p {
+    font-size: 14px;
+    max-width: 34ch;
+    line-height: 1.5;
+}
+
+/* paginación */
+.paginacion {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.paginacion a,
+.paginacion span {
+    display: grid;
+    place-items: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 8px;
+    border-radius: var(--radio-sm);
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--ink);
+    border: 1.5px solid transparent;
+    transition: background 0.15s ease, border-color 0.15s ease;
+    text-decoration: none;
+}
+
+.paginacion a:hover {
+    background: rgba(45, 127, 249, 0.08);
+    border-color: rgba(45, 127, 249, 0.25);
+    color: var(--azul);
+}
+
+.paginacion .pagina-activa {
+    background: var(--azul);
+    color: #fff;
+    border-color: var(--azul);
+}
+
+.paginacion .pagina-activa:hover {
+    background: var(--azul-hover);
+    border-color: var(--azul-hover);
+    color: #fff;
+}

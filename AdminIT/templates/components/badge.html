@@ -1,0 +1,18 @@
+{# Badge / chip de estado — uso: {% include 'components/badge.html' with texto="Activo" variante="ok" %} #}
+{# variante: ok | error | niebla | azul (default: niebla) #}
+{% if variante == "ok" %}
+    {% with bg="bg-ok/[10%]" border="border-ok/35" color="text-ok" dot="bg-ok" %}
+{% elif variante == "error" %}
+    {% with bg="bg-error/[8%]" border="border-error/35" color="text-error" dot="bg-error" %}
+{% elif variante == "azul" %}
+    {% with bg="bg-azul/[10%]" border="border-azul/35" color="text-azul" dot="bg-azul" %}
+{% else %}
+    {% with bg="bg-niebla/[10%]" border="border-niebla/35" color="text-niebla" dot="bg-niebla" %}
+{% endif %}
+<span class="inline-flex items-center gap-1.5 px-[10px] py-[4px]
+             rounded-full font-mono text-[10.5px] tracking-[0.12em] uppercase
+             {{ bg }} border {{ border }} {{ color }}">
+    {% if dot %}<span class="w-[6px] h-[6px] rounded-full {{ dot }}"></span>{% endif %}
+    {{ texto }}
+</span>
+{% endwith %}

@@ -1,0 +1,153 @@
+/* Design System Showcase — layout only, no component overrides */
+
+.ds-page {
+    background: var(--hueso);
+    min-height: 100vh;
+    padding: 40px clamp(16px, 4vw, 56px) 80px;
+}
+
+.ds-header {
+    margin-bottom: 48px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--linea);
+}
+
+.ds-header .titulo {
+    margin: 6px 0 8px;
+}
+
+/* ── Secciones ── */
+.ds-seccion {
+    margin-bottom: 52px;
+}
+
+.ds-seccion-header {
+    margin-bottom: 20px;
+}
+
+.ds-seccion-titulo {
+    font-size: clamp(16px, 2vw, 20px);
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin: 4px 0 0;
+}
+
+/* ── Grilla genérica de demos ── */
+.ds-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.ds-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.ds-item-demo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 24px;
+    background: white;
+    border: 1px solid var(--linea);
+    border-radius: var(--radio);
+    min-width: 130px;
+}
+
+.ds-label {
+    font-family: var(--fuente-mono);
+    font-size: 10px;
+    color: var(--niebla);
+    letter-spacing: 0.06em;
+    text-align: center;
+}
+
+/* ── Paleta de color ── */
+.ds-swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+}
+
+.ds-swatch {
+    border-radius: var(--radio-sm);
+    overflow: hidden;
+    border: 1px solid var(--linea);
+}
+
+.ds-swatch-color {
+    height: 72px;
+}
+
+.ds-swatch-info {
+    padding: 10px 12px;
+    background: white;
+}
+
+.ds-swatch-name {
+    font-family: var(--fuente-mono);
+    font-size: 10px;
+    color: var(--ink);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    display: block;
+}
+
+.ds-swatch-val {
+    font-family: var(--fuente-mono);
+    font-size: 10px;
+    color: var(--niebla);
+    letter-spacing: 0.04em;
+    display: block;
+    margin-top: 2px;
+}
+
+/* ── Tipografía ── */
+.ds-tipo-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.ds-tipo-item {
+    background: white;
+    border: 1px solid var(--linea);
+    border-radius: var(--radio);
+    padding: 18px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-width: 200px;
+}
+
+/* ── Alertas (columna) ── */
+.ds-alertas-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* ── Tabla en showcase ── */
+.ds-tabla-wrap {
+    background: white;
+    border: 1px solid var(--linea);
+    border-radius: var(--radio);
+    overflow: hidden;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+    .ds-swatch-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    }
+
+    .ds-tipo-item {
+        min-width: 100%;
+    }
+}
