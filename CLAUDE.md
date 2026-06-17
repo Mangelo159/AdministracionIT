@@ -266,3 +266,9 @@ var cscampo = initCSelect('cs-campo', function() {
 - Todo CSS nuevo va en `diseñobs.css`. No crear archivos `css/paginas/*.css` nuevos.
 - Los templates deben tener `{% block extrahead %}{% endblock %}` vacío — sin `<link>` a CSS de página.
 - El showcase `desingsistem.html` no carga CSS adicional: todo viene de `diseñobs.css` vía `basebs.html`.
+
+---
+
+## Git — reglas de commits
+
+- **No agregar coautoría de Claude** en los mensajes de commit. Sin líneas `Co-Authored-By`.
