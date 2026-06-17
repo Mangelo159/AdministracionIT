@@ -1,0 +1,168 @@
+{% extends "basebs.html" %}
+{% block pagetitle %}Auditoría{% endblock %}
+
+{% block extrahead %}{% endblock %}
+
+{% block canvas %}
+<script>
+var paginador, csAccion, csModelo;
+
+function filtrar() {
+  var q   = document.getElementById('buscador-audit').value.toLowerCase();
+  var acc = document.getElementById('filtro-accion-val').value;
+  var mod = document.getElementById('filtro-modelo-val').value;
+
+  document.querySelectorAll('.roles-tabla tbody tr:not(.fila-vacia)').forEach(function(row) {
+    var ok = true;
+    if (q)   ok = ok && row.textContent.toLowerCase().includes(q);
+    if (acc) ok = ok && row.dataset.accion === acc;
+    if (mod) ok = ok && row.dataset.modelo === mod;
+    if (ok) { delete row.dataset.filtrado; } else { row.dataset.filtrado = '1'; }
+  });
+  paginador.reset();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  paginador = initPaginador('.roles-tabla tbody', 'paginador-nav', 15);
+
+  csAccion = initCSelect('cs-accion', function() {
+    document.getElementById('filtro-accion-val').value = csAccion.getValue();
+    filtrar();
+  });
+  csModelo = initCSelect('cs-modelo', function() {
+    document.getElementById('filtro-modelo-val').value = csModelo.getValue();
+    filtrar();
+  });
+});
+</script>
+
+<!-- CABECERA -->
+<header class="hub-cabecera">
+  <div class="hub-cab-inner">
+    <div class="hub-cab-texto">
+      <div class="hub-cab-acento" aria-hidden="true"></div>
+      <div>
+        <p class="eyebrow">Consola TIC · Auditoría</p>
+        <h1 class="hub-titulo">Auditoría del sistema</h1>
+        <p class="hub-subtitulo">Registro de todas las acciones realizadas: creaciones, ediciones y eliminaciones.</p>
+      </div>
+    </div>
+    <a href="{% url 'home' %}" class="roles-btn-volver">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Inicio
+    </a>
+  </div>
+</header>
+
+<div class="roles-body">
+
+  <!-- BUSCADOR -->
+  <div class="buscador-card">
+    <div class="buscador-fila">
+
+      <div class="buscador-control">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" class="buscador-icono" aria-hidden="true">
+          <circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M10 10l3.5 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <input type="search" id="buscador-audit" placeholder="Buscar por usuario, objeto o detalle…" oninput="filtrar()" autocomplete="off">
+      </div>
+
+      <!-- Filtro: tipo de acción -->
+      <input type="hidden" id="filtro-accion-val" value="">
+      <div class="c-select" id="cs-accion">
+        <button type="button" class="c-select-trigger" aria-haspopup="listbox">
+          <span class="c-select-label">Todas las acciones</span>
+          <svg class="c-select-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+            <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="c-select-panel" role="listbox">
+          <div class="c-select-option selected" data-value="">Todas las acciones</div>
+          <div class="c-select-option" data-value="1">Creación</div>
+          <div class="c-select-option" data-value="2">Edición</div>
+          <div class="c-select-option" data-value="3">Eliminación</div>
+        </div>
+      </div>
+
+      <!-- Filtro: modelo -->
+      <input type="hidden" id="filtro-modelo-val" value="">
+      <div class="c-select" id="cs-modelo">
+        <button type="button" class="c-select-trigger" aria-haspopup="listbox">
+          <span class="c-select-label">Todos los modelos</span>
+          <svg class="c-select-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+            <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="c-select-panel" role="listbox">
+          <div class="c-select-option selected" data-value="">Todos los modelos</div>
+          {% for ct in content_types %}
+          <div class="c-select-option" data-value="{{ ct.content_type__model }}">{{ ct.content_type__model|capfirst }}</div>
+          {% endfor %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PANEL TABLA -->
+  <div class="roles-panel">
+    <div class="roles-panel-head">
+      <span class="roles-panel-label">Registro de movimientos</span>
+    </div>
+
+    <table class="roles-tabla">
+      <thead>
+        <tr>
+          <th>Fecha / Hora</th>
+          <th>Usuario</th>
+          <th>Modelo</th>
+          <th>Objeto</th>
+          <th class="centrado">Acción</th>
+          <th>Detalle</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for log in logs %}
+        <tr data-accion="{{ log.action_flag }}" data-modelo="{{ log.content_type.model }}">
+          <td class="texto-mono" style="white-space:nowrap;font-size:.83em">
+            {{ log.action_time|date:"d/m/Y" }}<br>
+            <span style="color:var(--niebla)">{{ log.action_time|date:"H:i:s" }}</span>
+          </td>
+          <td class="celda-nombre">
+            {% if log.user %}
+              {{ log.user.get_full_name|default:log.user.username }}
+            {% else %}
+              <span style="color:var(--niebla)">—</span>
+            {% endif %}
+          </td>
+          <td class="celda-desc" style="text-transform:capitalize">{{ log.content_type.model }}</td>
+          <td class="celda-desc">{{ log.object_repr }}</td>
+          <td style="text-align:center">
+            {% if log.action_flag == 1 %}
+              <span class="chip chip-ok">Creación</span>
+            {% elif log.action_flag == 2 %}
+              <span class="chip chip-azul">Edición</span>
+            {% elif log.action_flag == 3 %}
+              <span class="chip chip-error">Eliminación</span>
+            {% endif %}
+          </td>
+          <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--niebla);font-size:.82em">
+            {{ log.change_message }}
+          </td>
+        </tr>
+        {% empty %}
+        <tr class="fila-vacia">
+          <td colspan="6">Sin registros de auditoría disponibles</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <nav class="paginador" id="paginador-nav" aria-label="Paginación" style="margin-top:14px"></nav>
+
+</div>
+{% endblock %}

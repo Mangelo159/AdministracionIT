@@ -171,6 +171,14 @@ function initCSelectSearch(id, onChange) {
   };
 }
 
+/* ── mantReload(msg, tipo) ─────────────────────────────────
+   Persiste un toast en sessionStorage y recarga la página.
+   El toast aparece en la página ya recargada.             */
+function mantReload(msg, tipo) {
+  sessionStorage.setItem('_mant_toast', JSON.stringify({ msg: msg, tipo: tipo || 'exito' }));
+  location.reload();
+}
+
 /* ── mantToast(msg, tipo) ──────────────────────────────────
    Muestra una notificación flotante temporal.
    tipo: 'exito' (verde) | 'error' (rojo) | 'info' (azul)  */
@@ -296,3 +304,14 @@ function initPaginador(tbodySelector, navId, porPagina) {
   render();
   return { reset: function() { pagina = 1; render(); }, render: render };
 }
+
+/* Muestra el toast pendiente de mantReload al cargar la página */
+(function () {
+  var raw = sessionStorage.getItem('_mant_toast');
+  if (!raw) return;
+  sessionStorage.removeItem('_mant_toast');
+  try {
+    var t = JSON.parse(raw);
+    mantToast(t.msg, t.tipo);
+  } catch (e) {}
+})();

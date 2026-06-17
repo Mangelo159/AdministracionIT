@@ -39,8 +39,7 @@ function confirmarEliminar() {
   if (_formPendiente) {
     mantPost(_formPendiente, function() {
       cerrarConfirm();
-      mantToast('Asignación eliminada', 'exito');
-      setTimeout(function() { location.reload(); }, 2200);
+      mantReload('Asignación eliminada', 'error');
     });
   }
 }
@@ -78,8 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     mantPost(this, function() {
       cerrarModal();
-      mantToast('Asignación creada', 'exito');
-      setTimeout(function() { location.reload(); }, 2200);
+      mantReload('Asignación creada', 'exito');
     });
   });
 });

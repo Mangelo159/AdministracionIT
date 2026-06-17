@@ -35,6 +35,9 @@ class RolUsuario(models.Model):
     usuario_id = models.IntegerField()
     rol        = models.ForeignKey(Rol, on_delete=models.CASCADE, related_name='rolusuario_set')
 
+    def __str__(self):
+        return f'Usuario {self.usuario_id} → {self.rol}'
+
     class Meta:
         unique_together = ['usuario_id', 'rol']
         verbose_name = 'Asignación de Rol'
@@ -48,6 +51,9 @@ class RolModuloPermiso(models.Model):
     puede_crear    = models.BooleanField(default=False)
     puede_editar   = models.BooleanField(default=False)
     puede_eliminar = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.rol} · {self.modulo}'
 
     class Meta:
         unique_together = ['rol', 'modulo']

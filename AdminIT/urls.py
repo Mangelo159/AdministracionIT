@@ -5,7 +5,7 @@ import django.views.static
 from django.contrib import admin
 
 import settings
-from adm import views, mantenimiento, desingsistem
+from adm import views, mantenimiento, desingsistem, auditoria
 
 admin.autodiscover()
 handler404 = views.error_404
@@ -27,6 +27,7 @@ urlpatterns += [
     url(r'^$', views.home, name='home'),
     url(r'^mantenimiento$', mantenimiento.view, name='mantenimiento'),
     url(r'^desingsistem', desingsistem.view, name='Plantillas de Diseño'),
+    url(r'^auditoria', auditoria.view, name='Auditoria, Registro del Sistema'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

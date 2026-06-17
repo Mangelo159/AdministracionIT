@@ -52,8 +52,7 @@ function confirmarEliminar() {
   if (_formPendiente) {
     mantPost(_formPendiente, function() {
       cerrarConfirm();
-      mantToast('Módulo eliminado', 'exito');
-      setTimeout(function() { location.reload(); }, 2200);
+      mantReload('Módulo eliminado', 'error');
     });
   }
 }
@@ -79,11 +78,11 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('form-modulo').addEventListener('submit', function(e) {
     e.preventDefault();
     var accion = document.getElementById('mod-accion').value;
-    var msg = accion === 'crear_modulo' ? 'Módulo creado' : 'Módulo actualizado';
+    var msg  = accion === 'crear_modulo' ? 'Módulo creado' : 'Módulo actualizado';
+    var tipo = accion === 'crear_modulo' ? 'exito' : 'info';
     mantPost(this, function() {
       cerrarModal();
-      mantToast(msg, 'exito');
-      setTimeout(function() { location.reload(); }, 2200);
+      mantReload(msg, tipo);
     });
   });
 });

@@ -8,4 +8,4 @@ from adm.backends import addUserData
 def view(request):
     data = {'title': 'Sistema de Diseño'}
     addUserData(request, data)
-    return render(request, 'desingsistem.html', data)
+    return render(request, 'plantilla/desingsistem.html', data)

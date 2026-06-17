@@ -44,7 +44,7 @@
 
 - **Framework**: Django 3/4, app `adm/`, PostgreSQL en puerto 5433
 - **CSS**: Bootstrap 2 (legacy) + `diseñobs.css` (sistema de diseño propio, carga después de Bootstrap)
-- **JS**: Alpine.js (global, para navbar), `consola-tic.js` (global, contiene `initCSelect` e `initPaginador`)
+- **JS**: Alpine.js (global, para navbar), `consola-tic.js` (global, contiene `initCSelect`, `initPaginador`, `mantPost`, `mantToast`, `mantReload`)
 - **Tipografía**: IBM Plex Sans + IBM Plex Mono vía Google Fonts CDN
 - **Tokens**: definidos en `:root` de `diseñobs.css` — usar siempre `var(--token)`, nunca valores hardcoded
 
@@ -258,6 +258,100 @@ var cscampo = initCSelect('cs-campo', function() {
 - Validar manualmente antes del submit que el hidden input tenga valor (el browser no valida `required` en hidden).
 - Al resetear un formulario, llamar también `cscampo.reset()` para limpiar la etiqueta visible.
 - Aplica en modales, formularios de página y filtros de búsqueda — sin excepciones.
+
+---
+
+## Regla obligatoria: Botón "volver" en cabecera
+
+**Todo template de página completa debe incluir un botón `.roles-btn-volver` dentro del `hub-cabecera`, apuntando a la sección o página padre.**
+
+### Estructura HTML
+
+```html
+<header class="hub-cabecera">
+  <div class="hub-cab-inner">
+    <div class="hub-cab-texto">
+      <div class="hub-cab-acento" aria-hidden="true"></div>
+      <div>
+        <p class="eyebrow">Módulo · Sub-sección</p>
+        <h1 class="hub-titulo">Título de la página</h1>
+        <p class="hub-subtitulo">Descripción breve.</p>
+      </div>
+    </div>
+    <a href="{% url 'nombre-url-padre' %}" class="roles-btn-volver">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Etiqueta del destino
+    </a>
+  </div>
+</header>
+```
+
+### Reglas de aplicación
+
+- Sub-secciones de un hub (ej. Mantenimiento → Roles) apuntan al hub padre: `{% url 'mantenimiento' %}`.
+- Módulos raíz (ej. Auditoría) apuntan a Inicio: `{% url 'home' %}`.
+- El texto del botón es el nombre del destino, no "Volver" genérico.
+- Nunca omitir el botón aunque la página sea solo lectura.
+
+---
+
+## Regla obligatoria: Feedback de acciones CRUD con `mantReload`
+
+**Toda acción de crear, editar o eliminar que use AJAX debe mostrar el toast de confirmación en la página ya recargada, no antes del reload.**
+
+El flujo correcto es:
+1. `mantPost` recibe `result: ok` del servidor.
+2. Se llama `mantReload(msg, tipo)` — guarda el mensaje en `sessionStorage` y ejecuta `location.reload()` inmediatamente.
+3. La página recarga con los datos actualizados.
+4. `consola-tic.js` lee el `sessionStorage` al cargar y muestra el toast.
+
+### Función disponible en `consola-tic.js`
+
+```javascript
+mantReload(msg, tipo)
+// tipo: 'exito' (verde) | 'info' (azul) | 'error' (rojo)
+```
+
+### Color por tipo de acción
+
+| Acción | `tipo` | Color |
+|---|---|---|
+| Crear | `'exito'` | Verde |
+| Editar / Guardar | `'info'` | Azul |
+| Eliminar | `'error'` | Rojo |
+
+### Patrón en el template
+
+```javascript
+// Crear
+mantPost(this, function() {
+  cerrarModal();
+  mantReload('Elemento creado', 'exito');
+});
+
+// Editar
+var accion = document.getElementById('accion').value;
+var msg  = accion === 'crear_x' ? 'X creado' : 'X actualizado';
+var tipo = accion === 'crear_x' ? 'exito' : 'info';
+mantPost(this, function() {
+  cerrarModal();
+  mantReload(msg, tipo);
+});
+
+// Eliminar
+mantPost(_formPendiente, function() {
+  cerrarConfirm();
+  mantReload('Elemento eliminado', 'error');
+});
+```
+
+### Reglas de aplicación
+
+- Nunca usar `mantToast(...) + setTimeout(location.reload, N)` — ese patrón es obsoleto.
+- `mantReload` no tiene delay: el reload ocurre de inmediato tras recibir `ok` del servidor.
+- `mantToast` se sigue usando solo para mensajes de **error** (sin reload), como validaciones de formulario.
 
 ---
 

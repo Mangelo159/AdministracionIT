@@ -58,8 +58,7 @@ function confirmarEliminar() {
   if (_formPendiente) {
     mantPost(_formPendiente, function() {
       cerrarConfirm();
-      mantToast('Rol eliminado', 'exito');
-      setTimeout(function() { location.reload(); }, 2200);
+      mantReload('Rol eliminado', 'error');
     });
   }
 }
@@ -71,11 +70,11 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('form-rol').addEventListener('submit', function(e) {
     e.preventDefault();
     var accion = document.getElementById('rol-accion').value;
-    var msg = accion === 'crear_rol' ? 'Rol creado' : 'Rol actualizado';
+    var msg  = accion === 'crear_rol' ? 'Rol creado' : 'Rol actualizado';
+    var tipo = accion === 'crear_rol' ? 'exito' : 'info';
     mantPost(this, function() {
       cerrarModal();
-      mantToast(msg, 'exito');
-      setTimeout(function() { location.reload(); }, 2200);
+      mantReload(msg, tipo);
     });
   });
 });
