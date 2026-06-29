@@ -8,7 +8,7 @@ from django.shortcuts import render, get_object_or_404
 from django.utils.encoding import force_str
 
 from adm.backends import addUserData, get_permisos, permiso_para_accion
-from adm.models import Rol, RolUsuario, RolModuloPermiso, Modulo, UsuarioTIC
+from adm.models import Rol, RolUsuario, RolModuloPermiso, Modulo, UsuarioTIC, Institucion, Sede, UsuarioSede
 
 
 @login_required(redirect_field_name='ret', login_url='/login')
@@ -112,6 +112,42 @@ def view(request):
                         object_repr=force_str(asig),
                         action_flag=DELETION,
                         change_message=f'Eliminó asignación ID {asig.pk} ({client_address})')
+                    asig.delete()
+                    return JsonResponse({'result': 'ok'})
+                except Exception as ex:
+                    return JsonResponse({'result': 'bad', 'error': str(ex)})
+
+            elif accion == 'crear_asignacion_sede':
+                try:
+                    usuario_id = request.POST.get('usuario_id')
+                    sede_id    = request.POST.get('sede_id')
+                    if usuario_id and sede_id:
+                        asig, created = UsuarioSede.objects.get_or_create(
+                            usuario_id=int(usuario_id),
+                            sede_id=int(sede_id),
+                        )
+                        if created:
+                            LogEntry.objects.log_action(
+                                user_id=request.user.pk,
+                                content_type_id=ContentType.objects.get_for_model(asig).pk,
+                                object_id=asig.pk,
+                                object_repr=force_str(asig),
+                                action_flag=ADDITION,
+                                change_message=f'Asignó usuario ID {usuario_id} a sede ID {sede_id} ({client_address})')
+                    return JsonResponse({'result': 'ok'})
+                except Exception as ex:
+                    return JsonResponse({'result': 'bad', 'error': str(ex)})
+
+            elif accion == 'eliminar_asignacion_sede':
+                try:
+                    asig = get_object_or_404(UsuarioSede, id=request.POST.get('asignacion_sede_id'))
+                    LogEntry.objects.log_action(
+                        user_id=request.user.pk,
+                        content_type_id=ContentType.objects.get_for_model(asig).pk,
+                        object_id=asig.pk,
+                        object_repr=force_str(asig),
+                        action_flag=DELETION,
+                        change_message=f'Eliminó asignación de sede ID {asig.pk} ({client_address})')
                     asig.delete()
                     return JsonResponse({'result': 'ok'})
                 except Exception as ex:
@@ -231,6 +267,113 @@ def view(request):
                 except Exception as ex:
                     return JsonResponse({'result': 'bad', 'error': str(ex)})
 
+            elif accion == 'crear_institucion':
+                try:
+                    nombre = request.POST.get('nombre', '').strip()
+                    if nombre:
+                        inst = Institucion.objects.create(
+                            nombre=nombre,
+                            activo='activo' in request.POST,
+                        )
+                        LogEntry.objects.log_action(
+                            user_id=request.user.pk,
+                            content_type_id=ContentType.objects.get_for_model(inst).pk,
+                            object_id=inst.pk,
+                            object_repr=force_str(inst),
+                            action_flag=ADDITION,
+                            change_message=f'Creó institución "{inst.nombre}" ({client_address})')
+                    return JsonResponse({'result': 'ok'})
+                except Exception as ex:
+                    return JsonResponse({'result': 'bad', 'error': str(ex)})
+
+            elif accion == 'editar_institucion':
+                try:
+                    inst = get_object_or_404(Institucion, id=request.POST.get('inst_id'))
+                    inst.nombre = request.POST.get('nombre', inst.nombre).strip()
+                    inst.activo = 'activo' in request.POST
+                    inst.save()
+                    LogEntry.objects.log_action(
+                        user_id=request.user.pk,
+                        content_type_id=ContentType.objects.get_for_model(inst).pk,
+                        object_id=inst.pk,
+                        object_repr=force_str(inst),
+                        action_flag=CHANGE,
+                        change_message=f'Editó institución "{inst.nombre}" ({client_address})')
+                    return JsonResponse({'result': 'ok'})
+                except Exception as ex:
+                    return JsonResponse({'result': 'bad', 'error': str(ex)})
+
+            elif accion == 'eliminar_institucion':
+                try:
+                    inst = get_object_or_404(Institucion, id=request.POST.get('inst_id'))
+                    LogEntry.objects.log_action(
+                        user_id=request.user.pk,
+                        content_type_id=ContentType.objects.get_for_model(inst).pk,
+                        object_id=inst.pk,
+                        object_repr=force_str(inst),
+                        action_flag=DELETION,
+                        change_message=f'Eliminó institución "{inst.nombre}" ({client_address})')
+                    inst.delete()
+                    return JsonResponse({'result': 'ok'})
+                except Exception as ex:
+                    return JsonResponse({'result': 'bad', 'error': str(ex)})
+
+            elif accion == 'crear_sede':
+                try:
+                    nombre    = request.POST.get('nombre', '').strip()
+                    inst_id   = request.POST.get('inst_id', '').strip()
+                    if nombre and inst_id:
+                        sede = Sede.objects.create(
+                            nombre=nombre,
+                            institucion_id=int(inst_id),
+                            direccion=request.POST.get('direccion', '').strip(),
+                            activo='activo' in request.POST,
+                        )
+                        LogEntry.objects.log_action(
+                            user_id=request.user.pk,
+                            content_type_id=ContentType.objects.get_for_model(sede).pk,
+                            object_id=sede.pk,
+                            object_repr=force_str(sede),
+                            action_flag=ADDITION,
+                            change_message=f'Creó sede "{sede}" ({client_address})')
+                    return JsonResponse({'result': 'ok'})
+                except Exception as ex:
+                    return JsonResponse({'result': 'bad', 'error': str(ex)})
+
+            elif accion == 'editar_sede':
+                try:
+                    sede = get_object_or_404(Sede, id=request.POST.get('sede_id'))
+                    sede.nombre       = request.POST.get('nombre', sede.nombre).strip()
+                    sede.institucion_id = int(request.POST.get('inst_id') or sede.institucion_id)
+                    sede.direccion    = request.POST.get('direccion', '').strip()
+                    sede.activo       = 'activo' in request.POST
+                    sede.save()
+                    LogEntry.objects.log_action(
+                        user_id=request.user.pk,
+                        content_type_id=ContentType.objects.get_for_model(sede).pk,
+                        object_id=sede.pk,
+                        object_repr=force_str(sede),
+                        action_flag=CHANGE,
+                        change_message=f'Editó sede "{sede}" ({client_address})')
+                    return JsonResponse({'result': 'ok'})
+                except Exception as ex:
+                    return JsonResponse({'result': 'bad', 'error': str(ex)})
+
+            elif accion == 'eliminar_sede':
+                try:
+                    sede = get_object_or_404(Sede, id=request.POST.get('sede_id'))
+                    LogEntry.objects.log_action(
+                        user_id=request.user.pk,
+                        content_type_id=ContentType.objects.get_for_model(sede).pk,
+                        object_id=sede.pk,
+                        object_repr=force_str(sede),
+                        action_flag=DELETION,
+                        change_message=f'Eliminó sede "{sede}" ({client_address})')
+                    sede.delete()
+                    return JsonResponse({'result': 'ok'})
+                except Exception as ex:
+                    return JsonResponse({'result': 'bad', 'error': str(ex)})
+
         else:
             if not perms['puede_ver']:
                 return HttpResponseForbidden()
@@ -269,17 +412,34 @@ def view(request):
                     usuarios_dict = {u['usuario_id']: u for u in usuarios_qs}
                     asignaciones_raw = RolUsuario.objects.select_related('rol').order_by('rol__orden', 'rol__nombre')
                     asignaciones = []
+                    usuarios_con_rol_ids = set()
                     for asig in asignaciones_raw:
                         u = usuarios_dict.get(asig.usuario_id)
+                        usuarios_con_rol_ids.add(asig.usuario_id)
                         asignaciones.append({
                             'id':     asig.id,
                             'nombre': u['nombre_completo'] if u else f'ID {asig.usuario_id}',
                             'cedula': u['cedula'] if u else '',
                             'rol':    asig.rol.nombre,
                         })
-                    data['roles']        = Rol.objects.all()
-                    data['asignaciones'] = asignaciones
-                    data['usuarios']     = usuarios_qs
+                    asignaciones_sede_raw = UsuarioSede.objects.select_related('sede__institucion').order_by('sede__institucion__nombre', 'sede__nombre')
+                    asignaciones_sede = []
+                    for asig in asignaciones_sede_raw:
+                        u = usuarios_dict.get(asig.usuario_id)
+                        asignaciones_sede.append({
+                            'id':          asig.id,
+                            'nombre':      u['nombre_completo'] if u else f'ID {asig.usuario_id}',
+                            'cedula':      u['cedula'] if u else '',
+                            'sede':        asig.sede.nombre,
+                            'institucion': asig.sede.institucion.nombre,
+                        })
+                    data['roles']             = Rol.objects.all()
+                    data['asignaciones']      = asignaciones
+                    data['asignaciones_sede'] = asignaciones_sede
+                    data['usuarios']          = usuarios_qs
+                    data['usuarios_con_rol']  = [u for u in usuarios_qs if u['usuario_id'] in usuarios_con_rol_ids]
+                    data['sedes']             = Sede.objects.select_related('institucion').filter(activo=True).order_by('institucion__nombre', 'nombre')
+                    data['instituciones']     = Institucion.objects.filter(activo=True).order_by('nombre')
                     return render(request, "mantenimiento/masignaciones.html", data)
 
                 elif action == 'permisos':
@@ -288,11 +448,22 @@ def view(request):
                     data['permisos'] = RolModuloPermiso.objects.select_related('rol', 'modulo').order_by('rol__orden', 'modulo__orden')
                     return render(request, "mantenimiento/mpermisos.html", data)
 
+                elif action == 'instituciones':
+                    data['instituciones'] = Institucion.objects.all()
+                    return render(request, "mantenimiento/minstituciones.html", data)
+
+                elif action == 'sedes':
+                    data['sedes']        = Sede.objects.select_related('institucion').all()
+                    data['instituciones'] = Institucion.objects.filter(activo=True).order_by('nombre')
+                    return render(request, "mantenimiento/msedes.html", data)
+
             else:
-                data['roles']        = Rol.objects.all()
-                data['modulos']      = Modulo.objects.order_by('orden', 'nombre')
-                data['asignaciones'] = RolUsuario.objects.all()
-                data['permisos']     = RolModuloPermiso.objects.all()
+                data['roles']         = Rol.objects.all()
+                data['modulos']       = Modulo.objects.order_by('orden', 'nombre')
+                data['asignaciones']  = RolUsuario.objects.all()
+                data['permisos']      = RolModuloPermiso.objects.all()
+                data['instituciones'] = Institucion.objects.all()
+                data['sedes']         = Sede.objects.all()
                 return render(request, "mantenimiento/mantenimientobs.html", data)
 
     except Exception as e:

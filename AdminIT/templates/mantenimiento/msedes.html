@@ -1,0 +1,292 @@
+{% extends "basebs.html" %}
+{% block pagetitle %}Sedes — Mantenimiento{% endblock %}
+
+{% block extrahead %}{% endblock %}
+
+{% block canvas %}
+<script>
+var csInstitucion;
+
+function abrirModal() {
+  document.getElementById('modal-titulo').textContent = 'Nueva sede';
+  document.getElementById('modal-overlay').classList.add('abierto');
+  document.getElementById('sede-nombre').focus();
+}
+function cerrarModal() {
+  document.getElementById('modal-overlay').classList.remove('abierto');
+  document.getElementById('sede-accion').value = 'crear_sede';
+  document.getElementById('sede-id-hidden').value = '';
+  document.getElementById('inst-val').value = '';
+  document.getElementById('form-sede').reset();
+  document.getElementById('sede-activo').checked = true;
+  if (csInstitucion) csInstitucion.reset();
+}
+function cerrarModalOverlay(e) {
+  if (e.target === document.getElementById('modal-overlay')) cerrarModal();
+}
+function abrirModalEditar(id, nombre, instId, direccion, activo) {
+  document.getElementById('sede-accion').value = 'editar_sede';
+  document.getElementById('sede-id-hidden').value = id;
+  document.getElementById('sede-nombre').value = nombre;
+  document.getElementById('sede-direccion').value = direccion;
+  document.getElementById('sede-activo').checked = activo;
+  var opt = document.querySelector('#cs-institucion .c-select-option[data-value="' + instId + '"]');
+  if (opt) opt.click();
+  document.getElementById('modal-titulo').textContent = 'Editar sede';
+  document.getElementById('modal-overlay').classList.add('abierto');
+  document.getElementById('sede-nombre').focus();
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') { cerrarModal(); cerrarConfirm(); }
+});
+
+var paginador;
+function filtrar() {
+  var q = document.getElementById('buscador-sedes').value.toLowerCase();
+  document.querySelectorAll('.roles-tabla tbody tr:not(.fila-vacia)').forEach(function(row) {
+    var ok = !q || row.cells[0].textContent.toLowerCase().includes(q)
+                || row.cells[1].textContent.toLowerCase().includes(q);
+    if (ok) { delete row.dataset.filtrado; } else { row.dataset.filtrado = '1'; }
+  });
+  paginador.reset();
+}
+
+var _formPendiente = null;
+function abrirConfirm(form, nombre) {
+  _formPendiente = form;
+  document.getElementById('confirm-nombre').textContent = nombre;
+  document.getElementById('confirm-overlay').classList.add('abierto');
+  document.getElementById('confirm-btn-ok').focus();
+}
+function cerrarConfirm() {
+  document.getElementById('confirm-overlay').classList.remove('abierto');
+  _formPendiente = null;
+}
+function confirmarEliminar() {
+  if (_formPendiente) {
+    mantPost(_formPendiente, function() {
+      cerrarConfirm();
+      mantReload('Sede eliminada', 'error');
+    });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  paginador = initPaginador('.roles-tabla tbody', 'paginador-nav', 10);
+  csInstitucion = initCSelect('cs-institucion', function() {
+    document.getElementById('inst-val').value = csInstitucion.getValue();
+  });
+  document.getElementById('form-sede').addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (!document.getElementById('inst-val').value) {
+      mantToast('Selecciona una institución', 'error'); return;
+    }
+    var accion = document.getElementById('sede-accion').value;
+    var msg  = accion === 'crear_sede' ? 'Sede creada' : 'Sede actualizada';
+    var tipo = accion === 'crear_sede' ? 'exito' : 'info';
+    mantPost(this, function() {
+      cerrarModal();
+      mantReload(msg, tipo);
+    });
+  });
+});
+</script>
+
+<!-- CABECERA -->
+<header class="hub-cabecera">
+  <div class="hub-cab-inner">
+    <div class="hub-cab-texto">
+      <div class="hub-cab-acento" aria-hidden="true"></div>
+      <div>
+        <p class="eyebrow">Mantenimiento · Sedes</p>
+        <h1 class="hub-titulo">Sedes</h1>
+        <p class="hub-subtitulo">Ubicaciones físicas por institución.</p>
+      </div>
+    </div>
+    <a href="{% url 'mantenimiento' %}" class="roles-btn-volver">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Mantenimiento
+    </a>
+  </div>
+</header>
+
+{% if messages %}
+<div class="roles-mensajes">
+  {% for message in messages %}
+  <div class="alerta alerta-{{ message.tags }}" role="alert">{{ message }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="roles-body">
+
+  <div class="buscador-card">
+    <div class="buscador-fila">
+      <div class="buscador-control">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" class="buscador-icono" aria-hidden="true">
+          <circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M10 10l3.5 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <input type="search" id="buscador-sedes" placeholder="Buscar sede o institución…" oninput="filtrar()" autocomplete="off">
+      </div>
+    </div>
+  </div>
+
+  <div class="roles-panel">
+    <div class="roles-panel-head">
+      <span class="roles-panel-label">Sedes registradas</span>
+      {% if perms.puede_crear %}
+      <button type="button" class="roles-btn-nuevo" onclick="abrirModal()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/>
+        </svg>
+        Nueva sede
+      </button>
+      {% endif %}
+    </div>
+
+    <table class="roles-tabla">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Institución</th>
+          <th>Dirección</th>
+          <th class="centrado">Estado</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for sede in sedes %}
+        <tr>
+          <td class="celda-nombre">{{ sede.nombre }}</td>
+          <td>{{ sede.institucion.nombre }}</td>
+          <td class="celda-desc">{{ sede.direccion|default:"—" }}</td>
+          <td class="centrado">
+            {% if sede.activo %}
+            <span class="chip chip-ok"><span class="punto" aria-hidden="true"></span>Activa</span>
+            {% else %}
+            <span class="chip chip-neutro"><span class="punto" aria-hidden="true"></span>Inactiva</span>
+            {% endif %}
+          </td>
+          <td class="celda-acciones">
+            <div class="acciones-wrap">
+              {% if perms.puede_editar %}
+              <button type="button" class="btn-editar"
+                onclick="abrirModalEditar({{ sede.id }},'{{ sede.nombre|escapejs }}',{{ sede.institucion_id }},'{{ sede.direccion|escapejs }}',{{ sede.activo|yesno:'true,false' }})">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                  <path d="M8.5 1.5l2 2L4 10H2v-2L8.5 1.5z"/>
+                </svg>
+                Editar
+              </button>
+              {% endif %}
+              {% if perms.puede_eliminar %}
+              <form method="post" class="form-inline">
+                {% csrf_token %}
+                <input type="hidden" name="accion" value="eliminar_sede">
+                <input type="hidden" name="sede_id" value="{{ sede.id }}">
+                <button type="button" class="btn-eliminar"
+                  onclick="abrirConfirm(this.closest('form'), '{{ sede.nombre|escapejs }}')">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                    <polyline points="1,3 11,3"/><path d="M4,3V1h4v2M2,3l1,8h6l1-8"/>
+                  </svg>
+                  Eliminar
+                </button>
+              </form>
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr class="fila-vacia">
+          <td colspan="5">Sin sedes creadas · Usa el botón para registrar la primera</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <nav class="paginador" id="paginador-nav" aria-label="Paginación" style="margin-top:14px"></nav>
+</div>
+
+<!-- MODAL CREAR / EDITAR -->
+<div class="roles-overlay" id="modal-overlay" onclick="cerrarModalOverlay(event)">
+  <div class="roles-modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+    <div class="roles-modal-header">
+      <p class="roles-modal-titulo" id="modal-titulo">Nueva sede</p>
+      <button type="button" class="roles-modal-cerrar" onclick="cerrarModal()" aria-label="Cerrar">✕</button>
+    </div>
+    <form method="post" id="form-sede" class="roles-form">
+      {% csrf_token %}
+      <input type="hidden" name="accion" value="crear_sede" id="sede-accion">
+      <input type="hidden" name="sede_id" id="sede-id-hidden">
+
+      <div class="mant-campo">
+        <label for="sede-nombre">Nombre</label>
+        <input name="nombre" id="sede-nombre" required maxlength="100" placeholder="Ej. Campus Norte">
+      </div>
+      <div class="mant-campo">
+        <label>Institución</label>
+        <input type="hidden" name="inst_id" id="inst-val">
+        <div class="c-select c-select--m c-select--full" id="cs-institucion">
+          <button type="button" class="c-select-trigger" aria-haspopup="listbox">
+            <span class="c-select-label">— Seleccionar —</span>
+            <svg class="c-select-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="c-select-panel" role="listbox">
+            <div class="c-select-option selected" data-value="">— Seleccionar —</div>
+            {% for inst in instituciones %}
+            <div class="c-select-option" data-value="{{ inst.id }}">{{ inst.nombre }}</div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="mant-campo">
+        <label for="sede-direccion">Dirección</label>
+        <input name="direccion" id="sede-direccion" maxlength="255" placeholder="Ej. Av. Principal 123">
+      </div>
+      <label class="mant-check">
+        <input type="checkbox" name="activo" id="sede-activo" checked> Activa
+      </label>
+
+      <div class="roles-modal-acciones">
+        <button type="submit" class="mant-btn-primario">Guardar</button>
+        <button type="button" class="mant-btn-secundario" onclick="cerrarModal()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL CONFIRMACIÓN ELIMINAR -->
+<div class="confirm-overlay" id="confirm-overlay" onclick="if(event.target===this)cerrarConfirm()">
+  <div class="confirm-modal" role="alertdialog" aria-modal="true" aria-labelledby="confirm-titulo">
+    <div class="confirm-modal-barra"></div>
+    <div class="confirm-modal-cuerpo">
+      <div class="confirm-modal-icono" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="2,5 16,5"/>
+          <path d="M6,5V3h6v2M4,5l1.2,11h7.6L14,5"/>
+          <line x1="9" y1="8" x2="9" y2="13"/>
+          <line x1="6.5" y1="8" x2="6.8" y2="13"/>
+          <line x1="11.5" y1="8" x2="11.2" y2="13"/>
+        </svg>
+      </div>
+      <p class="confirm-modal-titulo" id="confirm-titulo">¿Eliminar sede?</p>
+      <p class="confirm-modal-texto">
+        Esta acción eliminará la sede <span class="confirm-modal-nombre" id="confirm-nombre"></span>
+        de forma permanente y no se puede deshacer.
+      </p>
+    </div>
+    <div class="confirm-modal-acciones">
+      <button type="button" class="confirm-btn-eliminar" id="confirm-btn-ok" onclick="confirmarEliminar()">
+        Eliminar
+      </button>
+      <button type="button" class="confirm-btn-cancelar" onclick="cerrarConfirm()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

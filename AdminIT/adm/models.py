@@ -87,3 +87,48 @@ class UsuarioTIC(models.Model):
 
     def __str__(self):
         return f'{self.nombre_completo or self.username} ({self.grupo})'
+
+class Institucion(models.Model):
+    nombre = models.CharField(max_length=150, unique=True)
+    activo = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = 'Institución'
+        verbose_name_plural = 'Instituciones'
+        ordering = ['nombre']
+
+    def __str__(self):
+        return self.nombre
+
+class Sede(models.Model):
+    nombre = models.CharField(max_length=100)
+    institucion = models.ForeignKey(Institucion, on_delete=models.PROTECT, related_name='sedes')
+    direccion = models.CharField(max_length=255, blank=True)
+    activo = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = 'Sede'
+        verbose_name_plural = 'Sedes'
+        ordering = ['institucion', 'nombre']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['institucion', 'nombre'],
+                name='unique_sede_por_institucion',
+            ),
+        ]
+
+    def __str__(self):
+        return f'{self.institucion.nombre} - {self.nombre}'
+
+
+class UsuarioSede(models.Model):
+    usuario_id = models.IntegerField()
+    sede       = models.ForeignKey(Sede, on_delete=models.CASCADE, related_name='usuariosede_set')
+
+    def __str__(self):
+        return f'Usuario {self.usuario_id} → {self.sede}'
+
+    class Meta:
+        unique_together = ['usuario_id', 'sede']
+        verbose_name = 'Asignación de Sede'
+        verbose_name_plural = 'Asignaciones de Sede'

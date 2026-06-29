@@ -21,7 +21,7 @@ function cerrarModalOverlay(e) {
   if (e.target === document.getElementById('modal-overlay')) cerrarModal();
 }
 document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') { cerrarModal(); cerrarConfirm(); }
+  if (e.key === 'Escape') { cerrarModal(); cerrarModalSede(); cerrarConfirm(); }
 });
 
 var _formPendiente = null;
@@ -48,7 +48,7 @@ var csRol, csAsigUsuario, csAsigRol, paginador;
 function filtrar() {
   var q   = document.getElementById('buscador-asig').value.toLowerCase();
   var rol = csRol ? csRol.getValue().toLowerCase() : '';
-  document.querySelectorAll('.roles-tabla tbody tr:not(.fila-vacia)').forEach(function(row) {
+  document.querySelectorAll('#tabla-roles tbody tr:not(.fila-vacia)').forEach(function(row) {
     var usu     = row.cells[0].textContent.toLowerCase();
     var ced     = row.cells[1].textContent.toLowerCase();
     var rolText = row.cells[2].textContent.toLowerCase();
@@ -58,6 +58,42 @@ function filtrar() {
   });
   paginador.reset();
 }
+
+function abrirModalSede() {
+  document.getElementById('modal-sede-overlay').classList.add('abierto');
+}
+function cerrarModalSede() {
+  document.getElementById('modal-sede-overlay').classList.remove('abierto');
+  document.getElementById('form-asig-sede').reset();
+  document.getElementById('asig-sede-usuario-val').value = '';
+  document.getElementById('asig-sede-val').value = '';
+  if (csAsigSedeUsuario) csAsigSedeUsuario.reset();
+  if (csAsigSede)        csAsigSede.reset();
+}
+function cerrarModalSedeOverlay(e) {
+  if (e.target === document.getElementById('modal-sede-overlay')) cerrarModalSede();
+}
+
+var csAsigSedeUsuario, csAsigSede, csInstFiltro, paginadorSede;
+function filtrarSede() {
+  var q    = document.getElementById('buscador-asig-sede').value.toLowerCase();
+  var inst = csInstFiltro ? csInstFiltro.getValue().toLowerCase() : '';
+  document.querySelectorAll('#tabla-sedes tbody tr:not(.fila-vacia)').forEach(function(row) {
+    var usu      = row.cells[0].textContent.toLowerCase();
+    var ced      = row.cells[1].textContent.toLowerCase();
+    var sede     = row.cells[2].textContent.toLowerCase();
+    var instText = row.cells[3].textContent.toLowerCase();
+    var ok = (!q || usu.includes(q) || ced.includes(q) || sede.includes(q))
+          && (!inst || instText === inst);
+    if (ok) { delete row.dataset.filtrado; } else { row.dataset.filtrado = '1'; }
+  });
+  paginadorSede.reset();
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') { cerrarModalSede(); }
+});
+
 document.addEventListener('DOMContentLoaded', function() {
   csRol        = initCSelect('cs-rol', filtrar);
   csAsigUsuario = initCSelect('cs-asig-usuario', function() {
@@ -66,7 +102,17 @@ document.addEventListener('DOMContentLoaded', function() {
   csAsigRol    = initCSelect('cs-asig-rol', function() {
     document.getElementById('asig-rol-val').value = csAsigRol.getValue();
   });
-  paginador = initPaginador('.roles-tabla tbody', 'paginador-nav', 10);
+  paginador = initPaginador('#tabla-roles tbody', 'paginador-nav', 10);
+
+  csInstFiltro = initCSelect('cs-inst-filtro', filtrarSede);
+  csAsigSedeUsuario = initCSelect('cs-asig-sede-usuario', function() {
+    document.getElementById('asig-sede-usuario-val').value = csAsigSedeUsuario.getValue();
+  });
+  csAsigSede = initCSelect('cs-asig-sede', function() {
+    document.getElementById('asig-sede-val').value = csAsigSede.getValue();
+  });
+  paginadorSede = initPaginador('#tabla-sedes tbody', 'paginador-sede-nav', 10);
+
   document.getElementById('form-asignacion').addEventListener('submit', function(e) {
     e.preventDefault();
     if (!document.getElementById('asig-usuario-val').value) {
@@ -78,6 +124,20 @@ document.addEventListener('DOMContentLoaded', function() {
     mantPost(this, function() {
       cerrarModal();
       mantReload('Asignación creada', 'exito');
+    });
+  });
+
+  document.getElementById('form-asig-sede').addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (!document.getElementById('asig-sede-usuario-val').value) {
+      mantToast('Selecciona un usuario', 'error'); return;
+    }
+    if (!document.getElementById('asig-sede-val').value) {
+      mantToast('Selecciona una sede', 'error'); return;
+    }
+    mantPost(this, function() {
+      cerrarModalSede();
+      mantReload('Asignación de sede creada', 'exito');
     });
   });
 });
@@ -112,90 +172,238 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <div class="roles-body">
 
-  <div class="buscador-card">
-    <div class="buscador-fila">
-      <div class="buscador-control">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" class="buscador-icono" aria-hidden="true">
-          <circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.8"/>
-          <path d="M10 10l3.5 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-        </svg>
-        <input type="search" id="buscador-asig" placeholder="Buscar asignación…" oninput="filtrar()" autocomplete="off">
-      </div>
-      <div class="buscador-divider" aria-hidden="true"></div>
-      <div class="c-select" id="cs-rol">
-        <button type="button" class="c-select-trigger" aria-haspopup="listbox">
-          <span class="c-select-label">Todos los roles</span>
-          <svg class="c-select-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
-            <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- TARJETA ROLES -->
+  <div class="tarjeta protagonista" style="margin-bottom:24px;">
+    <div class="buscador-card">
+      <div class="buscador-fila">
+        <div class="buscador-control">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" class="buscador-icono" aria-hidden="true">
+            <circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M10 10l3.5 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
           </svg>
-        </button>
-        <div class="c-select-panel" role="listbox">
-          <div class="c-select-option selected" data-value="">Todos los roles</div>
-          {% for rol in roles %}
-          <div class="c-select-option" data-value="{{ rol.nombre }}">{{ rol.nombre }}</div>
-          {% endfor %}
+          <input type="search" id="buscador-asig" placeholder="Buscar asignación…" oninput="filtrar()" autocomplete="off">
+        </div>
+        <div class="buscador-divider" aria-hidden="true"></div>
+        <div class="c-select" id="cs-rol">
+          <button type="button" class="c-select-trigger" aria-haspopup="listbox">
+            <span class="c-select-label">Todos los roles</span>
+            <svg class="c-select-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="c-select-panel" role="listbox">
+            <div class="c-select-option selected" data-value="">Todos los roles</div>
+            {% for rol in roles %}
+            <div class="c-select-option" data-value="{{ rol.nombre }}">{{ rol.nombre }}</div>
+            {% endfor %}
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="roles-panel">
-    <div class="roles-panel-head">
-      <span class="roles-panel-label">Usuarios con rol asignado</span>
-      {% if perms.puede_crear %}
-      <button type="button" class="roles-btn-nuevo" onclick="abrirModal()">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/>
-        </svg>
-        Asignar rol
-      </button>
-      {% endif %}
+    <div class="roles-panel">
+      <div class="roles-panel-head">
+        <span class="roles-panel-label">Usuarios con rol asignado</span>
+        {% if perms.puede_crear %}
+        <button type="button" class="roles-btn-nuevo" onclick="abrirModal()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/>
+          </svg>
+          Asignar rol
+        </button>
+        {% endif %}
+      </div>
+
+      <table class="roles-tabla" id="tabla-roles">
+        <thead>
+          <tr>
+            <th>Usuario</th>
+            <th>Cédula</th>
+            <th>Rol</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for asig in asignaciones %}
+          <tr>
+            <td class="celda-nombre">{{ asig.nombre }}</td>
+            <td class="celda-desc">{{ asig.cedula }}</td>
+            <td>{{ asig.rol }}</td>
+            <td class="celda-acciones">
+              <div class="acciones-wrap">
+                {% if perms.puede_eliminar %}
+                <form method="post" class="form-inline">
+                  {% csrf_token %}
+                  <input type="hidden" name="accion" value="eliminar_asignacion">
+                  <input type="hidden" name="asignacion_id" value="{{ asig.id }}">
+                  <button type="button" class="btn-eliminar"
+                    onclick="abrirConfirm(this.closest('form'), '{{ asig.nombre|escapejs }}')">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                      <polyline points="1,3 11,3"/><path d="M4,3V1h4v2M2,3l1,8h6l1-8"/>
+                    </svg>
+                    Quitar
+                  </button>
+                </form>
+                {% endif %}
+              </div>
+            </td>
+          </tr>
+          {% empty %}
+          <tr class="fila-vacia">
+            <td colspan="4">Sin asignaciones · Usa el botón para crear la primera</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
 
-    <table class="roles-tabla">
-      <thead>
-        <tr>
-          <th>Usuario</th>
-          <th>Cédula</th>
-          <th>Rol</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for asig in asignaciones %}
-        <tr>
-          <td class="celda-nombre">{{ asig.nombre }}</td>
-          <td class="celda-desc">{{ asig.cedula }}</td>
-          <td>{{ asig.rol }}</td>
-          <td class="celda-acciones">
-            <div class="acciones-wrap">
-              {% if perms.puede_eliminar %}
-              <form method="post" class="form-inline">
-                {% csrf_token %}
-                <input type="hidden" name="accion" value="eliminar_asignacion">
-                <input type="hidden" name="asignacion_id" value="{{ asig.id }}">
-                <button type="button" class="btn-eliminar"
-                  onclick="abrirConfirm(this.closest('form'), '{{ asig.nombre|escapejs }}')">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                    <polyline points="1,3 11,3"/><path d="M4,3V1h4v2M2,3l1,8h6l1-8"/>
-                  </svg>
-                  Quitar
-                </button>
-              </form>
-              {% endif %}
-            </div>
-          </td>
-        </tr>
-        {% empty %}
-        <tr class="fila-vacia">
-          <td colspan="4">Sin asignaciones · Usa el botón para crear la primera</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <nav class="paginador" id="paginador-nav" aria-label="Paginación" style="margin-top:14px"></nav>
   </div>
 
-  <nav class="paginador" id="paginador-nav" aria-label="Paginación" style="margin-top:14px"></nav>
+  <!-- TARJETA SEDES -->
+  <div class="tarjeta protagonista">
+    <div class="buscador-card">
+      <div class="buscador-fila">
+        <div class="buscador-control">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" class="buscador-icono" aria-hidden="true">
+            <circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M10 10l3.5 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <input type="search" id="buscador-asig-sede" placeholder="Buscar sede o usuario…" oninput="filtrarSede()" autocomplete="off">
+        </div>
+        <div class="buscador-divider" aria-hidden="true"></div>
+        <div class="c-select" id="cs-inst-filtro">
+          <button type="button" class="c-select-trigger" aria-haspopup="listbox">
+            <span class="c-select-label">Todas las instituciones</span>
+            <svg class="c-select-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="c-select-panel" role="listbox">
+            <div class="c-select-option selected" data-value="">Todas las instituciones</div>
+            {% for inst in instituciones %}
+            <div class="c-select-option" data-value="{{ inst.nombre }}">{{ inst.nombre }}</div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="roles-panel">
+      <div class="roles-panel-head">
+        <span class="roles-panel-label">Usuarios con sede asignada</span>
+        {% if perms.puede_crear %}
+        <button type="button" class="roles-btn-nuevo" onclick="abrirModalSede()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/>
+          </svg>
+          Asignar sede
+        </button>
+        {% endif %}
+      </div>
+
+      <table class="roles-tabla" id="tabla-sedes">
+        <thead>
+          <tr>
+            <th>Usuario</th>
+            <th>Cédula</th>
+            <th>Sede</th>
+            <th>Institución</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for asig in asignaciones_sede %}
+          <tr>
+            <td class="celda-nombre">{{ asig.nombre }}</td>
+            <td class="celda-desc">{{ asig.cedula }}</td>
+            <td>{{ asig.sede }}</td>
+            <td>{{ asig.institucion }}</td>
+            <td class="celda-acciones">
+              <div class="acciones-wrap">
+                {% if perms.puede_eliminar %}
+                <form method="post" class="form-inline">
+                  {% csrf_token %}
+                  <input type="hidden" name="accion" value="eliminar_asignacion_sede">
+                  <input type="hidden" name="asignacion_sede_id" value="{{ asig.id }}">
+                  <button type="button" class="btn-eliminar"
+                    onclick="abrirConfirm(this.closest('form'), '{{ asig.nombre|escapejs }}')">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                      <polyline points="1,3 11,3"/><path d="M4,3V1h4v2M2,3l1,8h6l1-8"/>
+                    </svg>
+                    Quitar
+                  </button>
+                </form>
+                {% endif %}
+              </div>
+            </td>
+          </tr>
+          {% empty %}
+          <tr class="fila-vacia">
+            <td colspan="5">Sin asignaciones de sede · Usa el botón para crear la primera</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <nav class="paginador" id="paginador-sede-nav" aria-label="Paginación sedes" style="margin-top:14px"></nav>
+  </div>
+
+</div>
+
+<!-- MODAL ASIGNAR SEDE -->
+<div class="roles-overlay" id="modal-sede-overlay" onclick="cerrarModalSedeOverlay(event)">
+  <div class="roles-modal" role="dialog" aria-modal="true" aria-labelledby="modal-sede-titulo">
+    <div class="roles-modal-header">
+      <p class="roles-modal-titulo" id="modal-sede-titulo">Asignar sede</p>
+      <button type="button" class="roles-modal-cerrar" onclick="cerrarModalSede()" aria-label="Cerrar">✕</button>
+    </div>
+    <form method="post" id="form-asig-sede" class="roles-form">
+      {% csrf_token %}
+      <input type="hidden" name="accion" value="crear_asignacion_sede">
+      <div class="mant-campo">
+        <label>Usuario</label>
+        <input type="hidden" name="usuario_id" id="asig-sede-usuario-val">
+        <div class="c-select c-select--m c-select--full c-select--scroll" id="cs-asig-sede-usuario">
+          <button type="button" class="c-select-trigger" aria-haspopup="listbox">
+            <span class="c-select-label">Selecciona usuario</span>
+            <svg class="c-select-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="c-select-panel" role="listbox">
+            <div class="c-select-option selected" data-value="">Selecciona usuario</div>
+            {% for u in usuarios_con_rol %}
+            <div class="c-select-option" data-value="{{ u.usuario_id }}">{{ u.nombre_completo }} ({{ u.cedula }})</div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="mant-campo">
+        <label>Sede</label>
+        <input type="hidden" name="sede_id" id="asig-sede-val">
+        <div class="c-select c-select--m c-select--full" id="cs-asig-sede">
+          <button type="button" class="c-select-trigger" aria-haspopup="listbox">
+            <span class="c-select-label">Selecciona sede</span>
+            <svg class="c-select-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="c-select-panel" role="listbox">
+            <div class="c-select-option selected" data-value="">Selecciona sede</div>
+            {% for sede in sedes %}
+            <div class="c-select-option" data-value="{{ sede.id }}">{{ sede.institucion.nombre }} — {{ sede.nombre }}</div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="roles-modal-acciones">
+        <button type="submit" class="mant-btn-primario">Asignar</button>
+        <button type="button" class="mant-btn-secundario" onclick="cerrarModalSede()">Cancelar</button>
+      </div>
+    </form>
+  </div>
 </div>
 
 <!-- MODAL -->
